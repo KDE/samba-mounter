@@ -1,0 +1,11 @@
+[org.kde.sambamounter.mount]
+Name=Mount a cifs file system
+Description=Execute's mount with the needed arguments to mount samba shares
+Policy=yes
+Persistence=always
+
+[org.kde.sambamounter.umount]
+Name=Umount a cifs file system
+Description=Execute's umount with the needed arguments to umount a samba share
+Policy=yes
+Persistence=always

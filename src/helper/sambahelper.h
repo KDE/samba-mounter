@@ -16,43 +16,22 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#ifndef sambamount_H
-#define sambamount_H
+#ifndef SAMBA_HELPER_CLASS_H
+#define SAMBA_HELPER_CLASS_H
 
-#include <kcmodule.h>
-#include <KConfigGroup>
+#include <QObject>
 
-class QStackedLayout;
-class QListWidgetItem;
-namespace Ui {
-    class KCMSambaMount;
-}
+#include <kauth.h>
 
-class SambaMount : public KCModule
+using namespace KAuth;
+
+class SambaHelper : public QObject
 {
-Q_OBJECT
-public:
-    SambaMount(QWidget *parent, const QVariantList&);
-    virtual ~SambaMount();
+    Q_OBJECT
 
-private Q_SLOTS:
-    void initSambaMounts();
-    void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void mountCreated(KConfigGroup group);
-
-    void addBtnClicked();
-    void rmBtnClicked();
-
-private:
-    void addMount(KConfigGroup group);
-    KConfigGroup mounts();
-
-    void mountSamba(KConfigGroup group);
-
-private:
-    QListWidgetItem *m_newMountItem;
-    Ui::KCMSambaMount *m_ui;
-    QStackedLayout *m_layout;
+    public Q_SLOTS:
+        ActionReply mount(QVariantMap args);
+        ActionReply umount(QVariantMap args);
 };
 
-#endif // sambamount_h
+#endif

@@ -23,7 +23,12 @@
 #include <QStackedLayout>
 
 #include <KDebug>
+#include <KAction>
+#include <KAuth/Action>
+#include <KAuth/ActionWatcher>
 #include <kpluginfactory.h>
+
+using namespace KAuth;
 
 K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
 K_EXPORT_PLUGIN(SambaMountFactory("sambamount", "sambamount"))
@@ -113,6 +118,8 @@ void SambaMount::mountCreated(KConfigGroup group)
     m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
     m_ui->mountList->setCurrentItem(item);
+
+    mountSamba(group);
 }
 
 void SambaMount::addBtnClicked()
@@ -144,5 +151,18 @@ void SambaMount::addMount(KConfigGroup group)
 
     m_ui->mountList->addItem(item);
 }
+
+void SambaMount::mountSamba(KConfigGroup group)
+{
+    Action readAction("org.kde.sambamounter.mount");
+    readAction.setHelperID("org.kde.sambamounter");
+
+    readAction.addArgument("ip", group.readEntry("ip", ""));
+    readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));
+    ActionReply reply = readAction.execute();
+
+    kDebug() << reply.data()["output"];
+}
+
 #include "sambamount.moc"
 

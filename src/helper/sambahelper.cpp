@@ -16,43 +16,43 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#ifndef sambamount_H
-#define sambamount_H
+#include "sambahelper.h"
 
-#include <kcmodule.h>
-#include <KConfigGroup>
+#include <QtDebug>
+#include <QFile>
+#include <QTextStream>
+#include <unistd.h>
+#include <QEventLoop>
+#include <KProcess>
 
-class QStackedLayout;
-class QListWidgetItem;
-namespace Ui {
-    class KCMSambaMount;
+
+ActionReply SambaHelper::mount(QVariantMap args)
+{
+    QString ip = args["ip"].toString();
+    QString mountPoint = args["mountPoint"].toString();
+
+    QStringList arguments;
+    arguments.append("-t");
+    arguments.append("cifs");
+    arguments.append(QString("//") + QString("192.168.0.152/Public/s"));
+    arguments.append(mountPoint);
+    arguments.append("-o");
+    arguments.append("guest,uid=1000");
+
+    QProcess proc;
+    proc.start("mount", arguments);
+    proc.waitForFinished();
+
+    ActionReply reply;
+    reply.addData("output", proc.readAllStandardError());
+
+    return reply;
 }
 
-class SambaMount : public KCModule
+ActionReply SambaHelper::umount(QVariantMap args)
 {
-Q_OBJECT
-public:
-    SambaMount(QWidget *parent, const QVariantList&);
-    virtual ~SambaMount();
 
-private Q_SLOTS:
-    void initSambaMounts();
-    void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void mountCreated(KConfigGroup group);
+    return ActionReply::SuccessReply;
+}
 
-    void addBtnClicked();
-    void rmBtnClicked();
-
-private:
-    void addMount(KConfigGroup group);
-    KConfigGroup mounts();
-
-    void mountSamba(KConfigGroup group);
-
-private:
-    QListWidgetItem *m_newMountItem;
-    Ui::KCMSambaMount *m_ui;
-    QStackedLayout *m_layout;
-};
-
-#endif // sambamount_h
+KDE4_AUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)

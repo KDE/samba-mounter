@@ -1,5 +1,6 @@
 set(sambamount_SRCS
     sambamount.cpp
+    mountinfo.cpp
 )
 
 qt4_automoc(${sambamount_SRCS})

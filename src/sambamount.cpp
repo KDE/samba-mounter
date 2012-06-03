@@ -17,8 +17,8 @@
  *************************************************************************************/
 
 #include "sambamount.h"
+#include "mountinfo.h"
 #include "ui_kcm.h"
-#include "ui_mount.h"
 
 #include <QStackedLayout>
 
@@ -51,11 +51,8 @@ SambaMount::~SambaMount()
 
 void SambaMount::initSambaMounts()
 {
-    Ui::MountInfo *info = new Ui::MountInfo();
-    QWidget *widget = new QWidget(this);
-    info->setupUi(widget);
+    MountInfo *widget = new MountInfo(this);
 
-    info->kurlrequester->setUrl(KUrl("smb:/"));
     m_layout->addWidget(widget);
 
     QListWidgetItem *newItem = new QListWidgetItem();
@@ -77,7 +74,7 @@ void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* p
 
     m_ui->mountInfo->setTitle(current->text());
     m_layout->setCurrentWidget(current->data(Qt::UserRole + 1).value<QWidget *>());
-//     m_ui->remoteBtn->setEnabled(current != m_newAccountItem);
+//     m_ui->remoteBtn->setEnabled(current != m_newAccountItem);`
 }
 #include "sambamount.moc"
 

@@ -34,10 +34,10 @@ MountInfo::MountInfo(QWidget* parent)
     m_painter1->setWidget(working1);
     m_painter2->setWidget(working2);
 
-    kurlrequester->setUrl(KUrl("smb:/"));
+    sambaRequester->setUrl(KUrl("smb:/"));
 
-    connect(kurlrequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
-    connect(kurlrequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
+    connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
+    connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 }
 

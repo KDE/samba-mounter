@@ -22,9 +22,11 @@
 #include <QtGui/QDesktopServices>
 
 #include <KDebug>
+#include <KColorScheme>
 #include <solid/device.h>
 #include <solid/storageaccess.h>
 #include <KPixmapSequenceOverlayPainter>
+#include <KLineEdit>
 
 MountInfo::MountInfo(QWidget* parent)
 : QWidget(parent)
@@ -37,6 +39,14 @@ MountInfo::MountInfo(QWidget* parent)
     m_painter1->setWidget(working1);
     m_painter2->setWidget(working2);
 
+    KColorScheme scheme(QPalette::Normal);
+    KColorScheme::ForegroundRole role;
+
+    QPalette palette(error->palette());
+    palette.setColor(QPalette::Foreground, scheme.foreground(KColorScheme::NegativeText).color());
+
+    error->setPalette(palette);
+
     sambaRequester->setUrl(KUrl("smb:/"));
 
     connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
@@ -46,6 +56,8 @@ MountInfo::MountInfo(QWidget* parent)
     mountPointRequester->setUrl(KUrl(QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
     connect(mountPointRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkMountPoint(KUrl)));
     connect(mountPointRequester, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
+
+    connect(button, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
 }
 
 MountInfo::~MountInfo()
@@ -67,6 +79,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
     kDebug() << "Host: " << url.host();
     m_process->close();
 
+    m_share = false;
     setResult(working1, Empty);
 
     m_painter1->start();
@@ -84,19 +97,27 @@ void MountInfo::nameResolveFinished(int status)
     kDebug() << output;
 
     if (output.isEmpty()) {
+        error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
+        Q_EMIT checkDone();
         return;
     }
+
     QString line = output.split("\n").at(1);
     QString ip = line.left(line.indexOf(" "));
 
     kDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {
+        error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
+        Q_EMIT checkDone();
         return;
     }
 
+    m_share = true;
     setResult(working1, Ok);
+    Q_EMIT checkDone();
+    error->setText("");
 }
 
 void MountInfo::checkMountPoint(const QString& url)
@@ -109,8 +130,11 @@ void MountInfo::checkMountPoint(const KUrl& url)
     QString urlPath = url.path();
     QDir dir(urlPath);
 
-    if (dir.count() != 0) {
+    m_mount = false;
+    if (dir.entryInfoList(QDir::NoDotAndDotDot).count() != 0) {
+        error->setText(i18n("Mount directory is not empty"));
         setResult(working2, Fail);
+        Q_EMIT checkDone();
         return;
     }
 
@@ -118,12 +142,17 @@ void MountInfo::checkMountPoint(const KUrl& url)
 
     Q_FOREACH(Solid::Device device, devices) {
         if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
+            error->setText(i18n("There is already something mounted in the directory"));
             setResult(working2, Fail);
+            Q_EMIT checkDone();
             return;
         }
     }
 
+    m_mount = true;
     setResult(working2, Ok);
+    error->setText("");
+    Q_EMIT checkDone();
     return;
 }
 
@@ -142,4 +171,21 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
             lbl->setPixmap(QIcon::fromTheme("dialog-close").pixmap(lbl->sizeHint()));
             break;
     }
+}
+
+void MountInfo::buttonClicked()
+{
+    checkMountPoint(mountPointRequester->lineEdit()->text());
+    checkValidSamba(sambaRequester->lineEdit()->text());
+
+    connect(this, SIGNAL(checkDone()), SLOT(mountIsValid()));
+}
+
+void MountInfo::mountIsValid()
+{
+    if (!m_mount || !m_share) {
+        return;
+    }
+
+    kDebug() << "Saving mount";
 }

@@ -47,7 +47,14 @@ class MountInfo : public QWidget, Ui::MountInfo
 
         void setResult(QLabel *lbl, Status status);
 
+        void buttonClicked();
+        void mountIsValid();
+
+    Q_SIGNALS:
+        void checkDone();
+
     private:
+        bool m_share, m_mount;
         QProcess *m_process;
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;

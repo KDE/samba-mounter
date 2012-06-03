@@ -1,0 +1,19 @@
+[Desktop Entry]
+Exec=kcmshell4 sambamount
+Icon=applications-internet
+Type=Service
+
+X-KDE-ServiceTypes=KCModule
+
+X-KDE-Library=sambamount
+X-KDE-ParentApp=kcontrol
+
+X-KDE-System-Settings-Parent-Category=network-and-connectivity
+
+Name=Samba Mount
+
+Comment=Configure mounts managed by KDE instead of fstab
+
+X-KDE-Keywords=Samba,Mount,Fstab
+
+Categories=Qt;KDE;X-KDE-settings-sambamount;

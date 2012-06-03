@@ -52,6 +52,14 @@ SambaMount::~SambaMount()
 
 void SambaMount::initSambaMounts()
 {
+    KConfigGroup configMounts = mounts();
+    if (!configMounts.groupList().isEmpty()) {
+        QStringList ids = configMounts.groupList();
+        Q_FOREACH(const QString &id, ids) {
+            addMount(configMounts.group(id));
+        }
+    }
+
     MountInfo *widget = new MountInfo(mounts(), this);
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
@@ -65,13 +73,12 @@ void SambaMount::initSambaMounts()
 
     m_ui->mountList->addItem(m_newMountItem);
 
-    m_ui->mountList->setCurrentItem(m_newMountItem);
-
-    KConfigGroup configMounts = mounts();
-    QStringList ids = configMounts.groupList();
-    Q_FOREACH(const QString &id, ids) {
-        addMount(configMounts.group(id));
+    if (m_ui->mountList->count() == 0) {
+        m_ui->mountList->setCurrentItem(m_newMountItem);
+        return;
     }
+
+    m_ui->mountList->setCurrentItem(m_ui->mountList->item(0));
 }
 
 void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)

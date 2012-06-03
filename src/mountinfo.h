@@ -42,6 +42,9 @@ class MountInfo : public QWidget, Ui::MountInfo
         void checkValidSamba(const QString &url);
         void nameResolveFinished(int status);
 
+        void checkMountPoint(const KUrl &url);
+        void checkMountPoint(const QString &url);
+
         void setResult(QLabel *lbl, Status status);
 
     private:

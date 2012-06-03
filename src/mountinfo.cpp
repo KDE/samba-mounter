@@ -19,8 +19,11 @@
 #include "mountinfo.h"
 
 #include <QtCore/QProcess>
+#include <QtGui/QDesktopServices>
 
 #include <KDebug>
+#include <solid/device.h>
+#include <solid/storageaccess.h>
 #include <KPixmapSequenceOverlayPainter>
 
 MountInfo::MountInfo(QWidget* parent)
@@ -39,6 +42,10 @@ MountInfo::MountInfo(QWidget* parent)
     connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
+
+    mountPointRequester->setUrl(KUrl(QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
+    connect(mountPointRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkMountPoint(KUrl)));
+    connect(mountPointRequester, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
 }
 
 MountInfo::~MountInfo()
@@ -90,6 +97,27 @@ void MountInfo::nameResolveFinished(int status)
     }
 
     setResult(working1, Ok);
+}
+
+void MountInfo::checkMountPoint(const QString& url)
+{
+    checkMountPoint(KUrl(url));
+}
+
+void MountInfo::checkMountPoint(const KUrl& url)
+{
+    QList <Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+
+    QString urlPath = url.path();
+    Q_FOREACH(Solid::Device device, devices) {
+        if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
+            setResult(working2, Fail);
+            return;
+        }
+    }
+
+    setResult(working2, Ok);
+    return;
 }
 
 void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)

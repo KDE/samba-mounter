@@ -34,7 +34,7 @@ MountInfo::MountInfo(QWidget* parent)
     m_painter1->setWidget(working1);
     m_painter2->setWidget(working2);
 
-    sambaRequester->setUrl(KUrl("smb:/"));
+    sambaRequester->setText("smb://");
 
     connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));

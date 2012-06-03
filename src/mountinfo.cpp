@@ -88,7 +88,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
     m_painter1->start();
 
     m_host = url.host();
-    m_fullSambaUrl = url.path();
+    m_fullSambaUrl = url.url();
     m_process->start("nmblookup", QStringList(m_host));
 }
 
@@ -202,6 +202,7 @@ void MountInfo::mountIsValid()
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);
     group.writeEntry("mountPoint", m_mountPoint);
+    group.writeEntry("fullSambaUrl", m_fullSambaUrl);
 
     group.sync();
 

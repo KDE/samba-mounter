@@ -212,5 +212,6 @@ void MountInfo::mountIsValid()
 
 void MountInfo::setEditMode()
 {
-
+    setResult(working1, Empty);
+    setResult(working2, Empty);
 }

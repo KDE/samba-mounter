@@ -106,9 +106,16 @@ void MountInfo::checkMountPoint(const QString& url)
 
 void MountInfo::checkMountPoint(const KUrl& url)
 {
+    QString urlPath = url.path();
+    QDir dir(urlPath);
+
+    if (dir.count() != 0) {
+        setResult(working2, Fail);
+        return;
+    }
+
     QList <Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
 
-    QString urlPath = url.path();
     Q_FOREACH(Solid::Device device, devices) {
         if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
             setResult(working2, Fail);

@@ -31,6 +31,7 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 : KCModule(SambaMountFactory::componentData(), parent)
 , m_layout(new QStackedLayout)
 {
+    setButtons(KCModule::Help);
     m_ui = new Ui::KCMSambaMount();
     m_ui->setupUi(this);
 

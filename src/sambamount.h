@@ -20,6 +20,7 @@
 #define sambamount_H
 
 #include <kcmodule.h>
+#include <KConfigGroup>
 
 class QStackedLayout;
 class QListWidgetItem;
@@ -37,8 +38,13 @@ public:
 private Q_SLOTS:
     void initSambaMounts();
     void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    void mountCreated(KConfigGroup group);
 
 private:
+    KConfigGroup mounts();
+
+private:
+    QListWidgetItem *m_newMountItem;
     Ui::KCMSambaMount *m_ui;
     QStackedLayout *m_layout;
 };

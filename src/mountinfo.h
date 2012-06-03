@@ -34,7 +34,7 @@ class MountInfo : public QWidget, Ui::MountInfo
             Ok      = 2,
             Fail    = 4
         };
-        explicit MountInfo(QWidget* parent = 0);
+        explicit MountInfo(KConfigGroup config, QWidget* parent = 0);
         virtual ~MountInfo();
 
     public Q_SLOTS:
@@ -55,13 +55,18 @@ class MountInfo : public QWidget, Ui::MountInfo
         void mountCreated(KConfigGroup);
 
     private:
+        void setEditMode();
+
+    private:
         bool m_share, m_mount;
         QProcess *m_process;
+        KConfigGroup m_config;
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;
 
         QString m_host;
         QString m_ip;
+        QString m_fullSambaUrl;
         QString m_mountPoint;
 };
 

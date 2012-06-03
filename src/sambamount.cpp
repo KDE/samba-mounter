@@ -22,6 +22,7 @@
 
 #include <QStackedLayout>
 
+#include <KDebug>
 #include <kpluginfactory.h>
 
 K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
@@ -51,19 +52,20 @@ SambaMount::~SambaMount()
 
 void SambaMount::initSambaMounts()
 {
-    MountInfo *widget = new MountInfo(this);
+    MountInfo *widget = new MountInfo(mounts(), this);
+    connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
 
-    QListWidgetItem *newItem = new QListWidgetItem();
-    newItem->setIcon(QIcon::fromTheme("applications-education-miscellaneous"));
-    newItem->setText("New Mount");
-    newItem->setData(Qt::UserRole, QVariant("New Mount"));
-    newItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
+    m_newMountItem = new QListWidgetItem();
+    m_newMountItem->setIcon(QIcon::fromTheme("applications-education-miscellaneous"));
+    m_newMountItem->setText("New Mount");
+    m_newMountItem->setData(Qt::UserRole, QVariant("New Mount"));
+    m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
-    m_ui->mountList->addItem(newItem);
+    m_ui->mountList->addItem(m_newMountItem);
 
-    m_ui->mountList->setCurrentItem(newItem);
+    m_ui->mountList->setCurrentItem(m_newMountItem);
 }
 
 void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -76,5 +78,32 @@ void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* p
     m_layout->setCurrentWidget(current->data(Qt::UserRole + 1).value<QWidget *>());
 //     m_ui->remoteBtn->setEnabled(current != m_newAccountItem);`
 }
+
+void SambaMount::mountCreated(KConfigGroup group)
+{
+    kDebug() << "New Mount Created";
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setIcon(QIcon::fromTheme("network-server"));
+    item->setText(group.readEntry("ip", ""));
+    item->setData(Qt::UserRole, group.readEntry("ip", ""));
+    item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(qobject_cast<QWidget *>(sender())));
+
+    m_ui->mountList->addItem(item);
+
+    MountInfo *widget = new MountInfo(mounts(), this);
+    connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
+
+    m_layout->addWidget(widget);
+
+    m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
+
+    m_ui->mountList->setCurrentItem(item);
+}
+
+KConfigGroup SambaMount::mounts()
+{
+    return KSharedConfig::openConfig("samba-mounter")->group("mounts");
+}
+
 #include "sambamount.moc"
 

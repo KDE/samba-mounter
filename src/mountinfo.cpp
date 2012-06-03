@@ -28,11 +28,12 @@
 #include <KPixmapSequenceOverlayPainter>
 #include <KLineEdit>
 
-MountInfo::MountInfo(QWidget* parent)
+MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 : QWidget(parent)
 , m_share(false)
 , m_mount(false)
 , m_process(new QProcess)
+, m_config(config)
 , m_painter1(new KPixmapSequenceOverlayPainter)
 , m_painter2(new KPixmapSequenceOverlayPainter)
 {
@@ -87,6 +88,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
     m_painter1->start();
 
     m_host = url.host();
+    m_fullSambaUrl = url.path();
     m_process->start("nmblookup", QStringList(m_host));
 }
 
@@ -195,11 +197,20 @@ void MountInfo::mountIsValid()
 
     kDebug() << "Saving mount";
 
-    KConfigGroup group;
+    KConfigGroup group = m_config.group(m_fullSambaUrl + "-" + m_mountPoint);
 
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);
     group.writeEntry("mountPoint", m_mountPoint);
 
+    group.sync();
+
     Q_EMIT mountCreated(group);
+
+    setEditMode();
+}
+
+void MountInfo::setEditMode()
+{
+
 }

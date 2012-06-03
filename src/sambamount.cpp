@@ -66,6 +66,12 @@ void SambaMount::initSambaMounts()
     m_ui->mountList->addItem(m_newMountItem);
 
     m_ui->mountList->setCurrentItem(m_newMountItem);
+
+    KConfigGroup configMounts = mounts();
+    QStringList ids = configMounts.groupList();
+    Q_FOREACH(const QString &id, ids) {
+        addMount(configMounts.group(id));
+    }
 }
 
 void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -105,5 +111,17 @@ KConfigGroup SambaMount::mounts()
     return KSharedConfig::openConfig("samba-mounter")->group("mounts");
 }
 
+void SambaMount::addMount(KConfigGroup group)
+{
+    MountInfo *info = new MountInfo(mounts(), this);
+
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setIcon(QIcon::fromTheme("network-server"));
+    item->setText(group.readEntry("ip", ""));
+    item->setData(Qt::UserRole, group.readEntry("ip", ""));
+    item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(info));
+
+    m_ui->mountList->addItem(item);
+}
 #include "sambamount.moc"
 

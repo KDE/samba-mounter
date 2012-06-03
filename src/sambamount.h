@@ -41,6 +41,7 @@ private Q_SLOTS:
     void mountCreated(KConfigGroup group);
 
 private:
+    void addMount(KConfigGroup group);
     KConfigGroup mounts();
 
 private:

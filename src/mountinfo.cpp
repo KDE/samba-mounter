@@ -70,6 +70,14 @@ MountInfo::~MountInfo()
     delete m_painter2;
 }
 
+void MountInfo::setConfigGroup(const QString& name)
+{
+    sambaRequester->setUrl(m_config.group(name).readEntry("fullSambaUrl"));
+    mountPointRequester->setUrl(m_config.group(name).readEntry("mountPoint"));
+
+    setEditMode();
+}
+
 void MountInfo::checkValidSamba(const QString& url)
 {
     kDebug() << url;

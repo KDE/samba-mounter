@@ -114,6 +114,8 @@ KConfigGroup SambaMount::mounts()
 void SambaMount::addMount(KConfigGroup group)
 {
     MountInfo *info = new MountInfo(mounts(), this);
+    info->setConfigGroup(group.name());
+    m_layout->addWidget(info);
 
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));

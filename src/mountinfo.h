@@ -37,6 +37,8 @@ class MountInfo : public QWidget, Ui::MountInfo
         explicit MountInfo(KConfigGroup config, QWidget* parent = 0);
         virtual ~MountInfo();
 
+        void setConfigGroup(const QString &name);
+
     public Q_SLOTS:
         void checkValidSamba(const KUrl &url);
         void checkValidSamba(const QString &url);

@@ -55,12 +55,13 @@ class MountInfo : public QWidget, Ui::MountInfo
     Q_SIGNALS:
         void checkDone();
         void mountCreated(KConfigGroup);
+        void mountEditted(KConfigGroup);
 
     private:
         void setEditMode();
 
     private:
-        bool m_share, m_mount;
+        bool m_share, m_mount, m_editMode;
         QProcess *m_process;
         KConfigGroup m_config;
         KPixmapSequenceOverlayPainter *m_painter1;

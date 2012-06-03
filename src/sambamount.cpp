@@ -19,6 +19,8 @@
 #include "sambamount.h"
 #include "ui_kcm.h"
 
+#include <QStackedLayout>
+
 #include <kpluginfactory.h>
 
 K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
@@ -26,12 +28,15 @@ K_EXPORT_PLUGIN(SambaMountFactory("sambamount", "sambamount"))
 
 SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 : KCModule(SambaMountFactory::componentData(), parent)
+, m_layout(new QStackedLayout)
 {
-
     m_ui = new Ui::KCMSambaMount();
     m_ui->setupUi(this);
 
-    QMetaObject::invokeMethod(this, "initSambaMount", Qt::QueuedConnection);
+    m_ui->mountInfo->setLayout(m_layout);
+    m_ui->mountList->setIconSize(QSize(48, 48));
+
+    QMetaObject::invokeMethod(this, "initSambaMounts", Qt::QueuedConnection);
 }
 
 SambaMount::~SambaMount()
@@ -42,6 +47,17 @@ SambaMount::~SambaMount()
 void SambaMount::initSambaMounts()
 {
 
+    QListWidgetItem *newItem = new QListWidgetItem();
+//     newItem->setIcon(QIcon::fromTheme("network-server"));
+    newItem->setIcon(QIcon::fromTheme("applications-education-miscellaneous"));
+    newItem->setText("New Mount");
+    newItem->setData(Qt::UserRole, QVariant("New Mount"));
+//     newItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
+//     newItem->setData(Qt::UserRole + 2, QVariant(type));
+
+    m_ui->mountList->addItem(newItem);
+
+    m_ui->mountList->setCurrentItem(newItem);
 }
 
 #include "sambamount.moc"

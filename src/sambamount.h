@@ -21,6 +21,7 @@
 
 #include <kcmodule.h>
 
+class QStackedLayout;
 namespace Ui {
     class KCMSambaMount;
 }
@@ -37,6 +38,7 @@ private Q_SLOTS:
 
 private:
     Ui::KCMSambaMount *m_ui;
+    QStackedLayout *m_layout;
 };
 
 #endif // sambamount_h

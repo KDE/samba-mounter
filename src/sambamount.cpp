@@ -18,6 +18,7 @@
 
 #include "sambamount.h"
 #include "ui_kcm.h"
+#include "ui_mount.h"
 
 #include <QStackedLayout>
 
@@ -36,6 +37,9 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
     m_ui->mountInfo->setLayout(m_layout);
     m_ui->mountList->setIconSize(QSize(48, 48));
 
+    connect(m_ui->mountList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+            this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
+
     QMetaObject::invokeMethod(this, "initSambaMounts", Qt::QueuedConnection);
 }
 
@@ -46,19 +50,33 @@ SambaMount::~SambaMount()
 
 void SambaMount::initSambaMounts()
 {
+    Ui::MountInfo *info = new Ui::MountInfo();
+    QWidget *widget = new QWidget(this);
+    info->setupUi(widget);
+
+    info->kurlrequester->setUrl(KUrl("smb:/"));
+    m_layout->addWidget(widget);
 
     QListWidgetItem *newItem = new QListWidgetItem();
-//     newItem->setIcon(QIcon::fromTheme("network-server"));
     newItem->setIcon(QIcon::fromTheme("applications-education-miscellaneous"));
     newItem->setText("New Mount");
     newItem->setData(Qt::UserRole, QVariant("New Mount"));
-//     newItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
-//     newItem->setData(Qt::UserRole + 2, QVariant(type));
+    newItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
     m_ui->mountList->addItem(newItem);
 
     m_ui->mountList->setCurrentItem(newItem);
 }
 
+void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+{
+    if (!current) {
+        return;
+    }
+
+    m_ui->mountInfo->setTitle(current->text());
+    m_layout->setCurrentWidget(current->data(Qt::UserRole + 1).value<QWidget *>());
+//     m_ui->remoteBtn->setEnabled(current != m_newAccountItem);
+}
 #include "sambamount.moc"
 

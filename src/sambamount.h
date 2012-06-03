@@ -22,6 +22,7 @@
 #include <kcmodule.h>
 
 class QStackedLayout;
+class QListWidgetItem;
 namespace Ui {
     class KCMSambaMount;
 }
@@ -35,6 +36,7 @@ public:
 
 private Q_SLOTS:
     void initSambaMounts();
+    void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
     Ui::KCMSambaMount *m_ui;

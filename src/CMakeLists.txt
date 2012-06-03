@@ -4,7 +4,7 @@ set(sambamount_SRCS
 
 qt4_automoc(${sambamount_SRCS})
 
-kde4_add_ui_files(sambamount_SRCS kcm.ui)
+kde4_add_ui_files(sambamount_SRCS kcm.ui mount.ui)
 
 kde4_add_plugin(sambamount ${sambamount_SRCS})
 

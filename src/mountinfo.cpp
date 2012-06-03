@@ -30,6 +30,8 @@
 
 MountInfo::MountInfo(QWidget* parent)
 : QWidget(parent)
+, m_share(false)
+, m_mount(false)
 , m_process(new QProcess)
 , m_painter1(new KPixmapSequenceOverlayPainter)
 , m_painter2(new KPixmapSequenceOverlayPainter)

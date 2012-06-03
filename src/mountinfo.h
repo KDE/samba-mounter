@@ -52,12 +52,17 @@ class MountInfo : public QWidget, Ui::MountInfo
 
     Q_SIGNALS:
         void checkDone();
+        void mountCreated(KConfigGroup);
 
     private:
         bool m_share, m_mount;
         QProcess *m_process;
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;
+
+        QString m_host;
+        QString m_ip;
+        QString m_mountPoint;
 };
 
 #endif //MOUNT_INFO_H

@@ -86,7 +86,8 @@ void MountInfo::checkValidSamba(const KUrl& url)
 
     m_painter1->start();
 
-    m_process->start("nmblookup", QStringList(url.host()));
+    m_host = url.host();
+    m_process->start("nmblookup", QStringList(m_host));
 }
 
 void MountInfo::nameResolveFinished(int status)
@@ -116,6 +117,7 @@ void MountInfo::nameResolveFinished(int status)
         return;
     }
 
+    m_ip = ip;
     m_share = true;
     setResult(working1, Ok);
     Q_EMIT checkDone();
@@ -133,6 +135,8 @@ void MountInfo::checkMountPoint(const KUrl& url)
     QDir dir(urlPath);
 
     m_mount = false;
+    m_mountPoint = url.path();
+
     if (dir.entryInfoList(QDir::NoDotAndDotDot).count() != 0) {
         error->setText(i18n("Mount directory is not empty"));
         setResult(working2, Fail);
@@ -190,4 +194,12 @@ void MountInfo::mountIsValid()
     }
 
     kDebug() << "Saving mount";
+
+    KConfigGroup group;
+
+    group.writeEntry("ip", m_ip);
+    group.writeEntry("hostname", m_host);
+    group.writeEntry("mountPoint", m_mountPoint);
+
+    Q_EMIT mountCreated(group);
 }

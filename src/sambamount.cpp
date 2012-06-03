@@ -39,6 +39,8 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
     m_ui->mountInfo->setLayout(m_layout);
     m_ui->mountList->setIconSize(QSize(48, 48));
 
+    connect(m_ui->remoteBtn, SIGNAL(clicked(bool)), SLOT(rmBtnClicked()));
+    connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addBtnClicked()));
     connect(m_ui->mountList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
 
@@ -111,6 +113,16 @@ void SambaMount::mountCreated(KConfigGroup group)
     m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
     m_ui->mountList->setCurrentItem(item);
+}
+
+void SambaMount::addBtnClicked()
+{
+    m_ui->mountList->setCurrentItem(m_newMountItem, QItemSelectionModel::SelectCurrent);
+}
+
+void SambaMount::rmBtnClicked()
+{
+
 }
 
 KConfigGroup SambaMount::mounts()

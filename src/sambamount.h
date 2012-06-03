@@ -40,6 +40,9 @@ private Q_SLOTS:
     void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void mountCreated(KConfigGroup group);
 
+    void addBtnClicked();
+    void rmBtnClicked();
+
 private:
     void addMount(KConfigGroup group);
     KConfigGroup mounts();

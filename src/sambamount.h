@@ -48,6 +48,7 @@ private:
     KConfigGroup mounts();
 
     void mountSamba(KConfigGroup group);
+    void umountSamba(const QString &name);
 
 private:
     QListWidgetItem *m_newMountItem;

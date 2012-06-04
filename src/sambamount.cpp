@@ -107,6 +107,7 @@ void SambaMount::mountCreated(KConfigGroup group)
     item->setText(group.readEntry("ip", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(qobject_cast<QWidget *>(sender())));
+    item->setData(Qt::UserRole + 2, group.name());
 
     m_ui->mountList->addItem(item);
 
@@ -134,7 +135,12 @@ void SambaMount::addBtnClicked()
 
 void SambaMount::rmBtnClicked()
 {
+    QListWidgetItem *item = m_ui->mountList->currentItem();
+    if (item == m_newMountItem) {
+        return;
+    }
 
+    umountSamba(item->data(Qt::UserRole + 2).toString());
 }
 
 KConfigGroup SambaMount::mounts()
@@ -153,6 +159,7 @@ void SambaMount::addMount(KConfigGroup group)
     item->setText(group.readEntry("ip", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(info));
+    item->setData(Qt::UserRole + 2, group.name());
 
     m_ui->mountList->addItem(item);
 }
@@ -167,6 +174,17 @@ void SambaMount::mountSamba(KConfigGroup group)
     ActionReply reply = readAction.execute();
 
     kDebug() << reply.data()["output"];
+}
+
+void SambaMount::umountSamba(const QString& name)
+{
+    KConfigGroup group = mounts().group(name);
+    Action readAction("org.kde.sambamounter.umount");
+    readAction.setHelperID("org.kde.sambamounter");
+
+    readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));
+    ActionReply reply = readAction.execute();
+
 }
 
 #include "sambamount.moc"

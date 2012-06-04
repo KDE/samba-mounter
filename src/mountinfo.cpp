@@ -72,7 +72,7 @@ MountInfo::~MountInfo()
 void MountInfo::setConfigGroup(const QString& name)
 {
     sambaRequester->setUrl(m_config.group(name).readEntry("fullSambaUrl"));
-    shareName->setText(m_config.group(name).readEntry("mountPoint"));
+    shareName->setText(m_config.group(name).readEntry("mountName"));
 
     setEditMode();
 }

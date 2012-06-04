@@ -57,9 +57,7 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 
-    mountPointRequester->setUrl(KUrl(QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
-    connect(mountPointRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkMountPoint(KUrl)));
-    connect(mountPointRequester, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
+    connect(shareName, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
 
     connect(button, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
 }
@@ -74,7 +72,7 @@ MountInfo::~MountInfo()
 void MountInfo::setConfigGroup(const QString& name)
 {
     sambaRequester->setUrl(m_config.group(name).readEntry("fullSambaUrl"));
-    mountPointRequester->setUrl(m_config.group(name).readEntry("mountPoint"));
+    shareName->setText(m_config.group(name).readEntry("mountPoint"));
 
     setEditMode();
 }
@@ -135,21 +133,29 @@ void MountInfo::nameResolveFinished(int status)
     error->setText("");
 }
 
-void MountInfo::checkMountPoint(const QString& url)
+void MountInfo::checkMountPoint(const QString& name)
 {
+    KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    url.addPath("NetWork");
+    url.addPath(name);
     checkMountPoint(KUrl(url));
 }
 
 void MountInfo::checkMountPoint(const KUrl& url)
 {
+    kDebug() << url;
     QString urlPath = url.path();
     QDir dir(urlPath);
+
+    KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    networkDir.addPath("NetWork");
+    dir.mkdir(networkDir.path());
 
     m_mount = false;
     m_mountPoint = url.path();
 
-    if (dir.entryInfoList(QDir::NoDotAndDotDot).count() != 0) {
-        error->setText(i18n("Mount directory is not empty"));
+    if (dir.exists() && dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() != 0) {
+        error->setText(i18n("Please, choose another name"));
         setResult(working2, Fail);
         Q_EMIT checkDone();
         return;
@@ -159,7 +165,7 @@ void MountInfo::checkMountPoint(const KUrl& url)
 
     Q_FOREACH(Solid::Device device, devices) {
         if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
-            error->setText(i18n("There is already something mounted in the directory"));
+            error->setText(i18n("Please, choose another name"));
             setResult(working2, Fail);
             Q_EMIT checkDone();
             return;
@@ -192,7 +198,7 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
 
 void MountInfo::buttonClicked()
 {
-    checkMountPoint(mountPointRequester->lineEdit()->text());
+    checkMountPoint(shareName->text());
     checkValidSamba(sambaRequester->lineEdit()->text());
 
     connect(this, SIGNAL(checkDone()), SLOT(mountIsValid()));

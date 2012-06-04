@@ -45,7 +45,7 @@ class MountInfo : public QWidget, Ui::MountInfo
         void nameResolveFinished(int status);
 
         void checkMountPoint(const KUrl &url);
-        void checkMountPoint(const QString &url);
+        void checkMountPoint(const QString& name);
 
         void setResult(QLabel *lbl, Status status);
 

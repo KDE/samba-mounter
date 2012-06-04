@@ -51,6 +51,14 @@ ActionReply SambaHelper::mount(QVariantMap args)
 
 ActionReply SambaHelper::umount(QVariantMap args)
 {
+    QString mountPoint = args["mountPoint"];
+
+    QStringList arguments;
+    arguments.append(args["mountPoint"].toString());
+
+    QProcess proc;
+    proc.start("umount", arguments);
+    proc.waitForFinished();
 
     return ActionReply::SuccessReply;
 }

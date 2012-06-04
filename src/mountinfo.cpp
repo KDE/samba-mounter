@@ -87,6 +87,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
 {
     kDebug() << url;
     kDebug() << "Host: " << url.host();
+    kDebug() << "Dir: " << url.directory(KUrl::AppendTrailingSlash) + url.fileName();
     m_process->close();
 
     m_share = false;
@@ -96,6 +97,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
 
     m_host = url.host();
     m_fullSambaUrl = url.url();
+    m_sambaDir = url.directory(KUrl::AppendTrailingSlash) + url.fileName();
     m_process->start("nmblookup", QStringList(m_host));
 }
 
@@ -135,6 +137,7 @@ void MountInfo::nameResolveFinished(int status)
 
 void MountInfo::checkMountPoint(const QString& name)
 {
+    m_mountName = name;
     KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     url.addPath("Network");
     url.addPath(name);
@@ -150,7 +153,6 @@ void MountInfo::checkMountPoint(const KUrl& url)
     KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     networkDir.addPath("Network");
     dir.mkdir(networkDir.path());
-    dir.mkdir(urlPath);
 
     m_mount = false;
     m_mountPoint = url.path();
@@ -218,9 +220,13 @@ void MountInfo::mountIsValid()
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);
     group.writeEntry("mountPoint", m_mountPoint);
+    group.writeEntry("sambaDir", m_sambaDir);
     group.writeEntry("fullSambaUrl", m_fullSambaUrl);
+    group.writeEntry("mountName", m_mountName);
 
     group.sync();
+
+    QDir().mkdir(m_mountPoint);
 
     if (m_editMode) {
         Q_EMIT mountEditted(group);

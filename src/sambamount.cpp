@@ -178,6 +178,7 @@ void SambaMount::mountSamba(KConfigGroup group)
     readAction.setHelperID("org.kde.sambamounter");
 
     readAction.addArgument("ip", group.readEntry("ip", ""));
+    readAction.addArgument("sambaDir", group.readEntry("sambaDir", ""));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));
     ActionReply reply = readAction.execute();
 

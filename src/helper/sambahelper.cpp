@@ -29,12 +29,13 @@
 ActionReply SambaHelper::mount(QVariantMap args)
 {
     QString ip = args["ip"].toString();
+    QString sambaDir = args["sambaDir"].toString();
     QString mountPoint = args["mountPoint"].toString();
 
     QStringList arguments;
     arguments.append("-t");
     arguments.append("cifs");
-    arguments.append(QString("//") + QString("192.168.0.152/Public/"));
+    arguments.append(QString("//") + ip + sambaDir);
     arguments.append(mountPoint);
     arguments.append("-o");
     arguments.append("guest,uid=1000");

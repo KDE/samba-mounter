@@ -69,8 +69,10 @@ class MountInfo : public QWidget, Ui::MountInfo
 
         QString m_host;
         QString m_ip;
+        QString m_sambaDir;
         QString m_fullSambaUrl;
         QString m_mountPoint;
+        QString m_mountName;
 };
 
 #endif //MOUNT_INFO_H

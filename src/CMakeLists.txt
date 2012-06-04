@@ -16,3 +16,4 @@ install(TARGETS sambamount DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES sambamount.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 
 add_subdirectory(helper)
+add_subdirectory(onstart)

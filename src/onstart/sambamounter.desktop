@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Samba Mounter
+GenericName=Mounts Samba shares
+Exec=samba-onstart
+Icon=
+Type=Application
+Terminal=false
+X-KDE-autostart-after=panel
+X-KDE-StartupNotify=false
+X-DBUS-StartupType=Unique
+X-KDE-UniqueApplet=true
+OnlyShowIn=KDE;
+Categories=Qt;KDE;Utility;X-KDE-Utilities-Desktop;
+Comment=Mounts Samba shares at startup time

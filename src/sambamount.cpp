@@ -117,6 +117,11 @@ void SambaMount::mountCreated(KConfigGroup group)
 
     m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
+    int row = m_ui->mountList->row(m_newMountItem);
+
+    m_ui->mountList->takeItem(row);
+    m_ui->mountList->insertItem(row, item);
+    m_ui->mountList->addItem(m_newMountItem);
     m_ui->mountList->setCurrentItem(item);
 
     mountSamba(group);

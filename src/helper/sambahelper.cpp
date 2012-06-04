@@ -34,7 +34,7 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QStringList arguments;
     arguments.append("-t");
     arguments.append("cifs");
-    arguments.append(QString("//") + QString("192.168.0.152/Public/s"));
+    arguments.append(QString("//") + QString("192.168.0.152/Public/"));
     arguments.append(mountPoint);
     arguments.append("-o");
     arguments.append("guest,uid=1000");

@@ -140,7 +140,15 @@ void SambaMount::rmBtnClicked()
         return;
     }
 
-    umountSamba(item->data(Qt::UserRole + 2).toString());
+    QString groupName = item->data(Qt::UserRole + 2).toString();
+    umountSamba(groupName);
+    mounts().deleteGroup(groupName);
+
+    QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
+    m_layout->removeWidget(widget);
+    m_ui->mountList->removeItemWidget(item);
+
+    delete item;
 }
 
 KConfigGroup SambaMount::mounts()

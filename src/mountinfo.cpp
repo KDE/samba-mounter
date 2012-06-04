@@ -140,6 +140,8 @@ void MountInfo::nameResolveFinished(int status)
     setResult(working1, Ok);
     Q_EMIT checkDone();
     error->setText("");
+
+    autoFillMountName();
 }
 
 bool MountInfo::checkMountPoint(const QString& name)
@@ -252,4 +254,21 @@ void MountInfo::setEditMode()
     setResult(working2, Empty);
 
     m_editMode = true;
+}
+
+void MountInfo::autoFillMountName()
+{
+    if (!shareName->text().isEmpty()) {
+        return;
+    }
+
+    QString name = KUrl(sambaRequester->lineEdit()->text()).host();
+
+    if (!checkMountPoint(name)) {
+        setResult(working2, Empty);
+        error->setText("");
+        return;
+    }
+
+    shareName->setText(name);
 }

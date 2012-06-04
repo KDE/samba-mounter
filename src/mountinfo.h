@@ -59,6 +59,7 @@ class MountInfo : public QWidget, Ui::MountInfo
 
     private:
         void setEditMode();
+        void autoFillMountName();
 
     private:
         bool m_share, m_mount, m_editMode;

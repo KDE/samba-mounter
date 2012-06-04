@@ -93,11 +93,18 @@ void MountInfo::checkValidSamba(const KUrl& url)
     m_share = false;
     setResult(working1, Empty);
 
-    m_painter1->start();
-
     m_host = url.host();
     m_fullSambaUrl = url.url();
     m_sambaDir = url.directory(KUrl::AppendTrailingSlash) + url.fileName();
+
+    if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
+        error->setText(i18n("You must select a folder"));
+        setResult(working1, Fail);
+        Q_EMIT checkDone();
+        return;
+    }
+
+    m_painter1->start();
     m_process->start("nmblookup", QStringList(m_host));
 }
 

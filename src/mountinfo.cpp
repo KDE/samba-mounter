@@ -142,16 +142,17 @@ void MountInfo::nameResolveFinished(int status)
     error->setText("");
 }
 
-void MountInfo::checkMountPoint(const QString& name)
+bool MountInfo::checkMountPoint(const QString& name)
 {
     m_mountName = name;
     KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     url.addPath("Network");
     url.addPath(name);
-    checkMountPoint(KUrl(url));
+
+    return checkMountPoint(KUrl(url));
 }
 
-void MountInfo::checkMountPoint(const KUrl& url)
+bool MountInfo::checkMountPoint(const KUrl& url)
 {
     kDebug() << url;
     QString urlPath = url.path();
@@ -168,7 +169,7 @@ void MountInfo::checkMountPoint(const KUrl& url)
         error->setText(i18n("Please, choose another name"));
         setResult(working2, Fail);
         Q_EMIT checkDone();
-        return;
+        return false;
     }
 
     QList <Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
@@ -178,7 +179,7 @@ void MountInfo::checkMountPoint(const KUrl& url)
             error->setText(i18n("Please, choose another name"));
             setResult(working2, Fail);
             Q_EMIT checkDone();
-            return;
+            return false;
         }
     }
 
@@ -186,7 +187,8 @@ void MountInfo::checkMountPoint(const KUrl& url)
     setResult(working2, Ok);
     error->setText("");
     Q_EMIT checkDone();
-    return;
+
+    return true;
 }
 
 void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)

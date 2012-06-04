@@ -136,7 +136,7 @@ void MountInfo::nameResolveFinished(int status)
 void MountInfo::checkMountPoint(const QString& name)
 {
     KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    url.addPath("NetWork");
+    url.addPath("Network");
     url.addPath(name);
     checkMountPoint(KUrl(url));
 }
@@ -148,8 +148,9 @@ void MountInfo::checkMountPoint(const KUrl& url)
     QDir dir(urlPath);
 
     KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    networkDir.addPath("NetWork");
+    networkDir.addPath("Network");
     dir.mkdir(networkDir.path());
+    dir.mkdir(urlPath);
 
     m_mount = false;
     m_mountPoint = url.path();

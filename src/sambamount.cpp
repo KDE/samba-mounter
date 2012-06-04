@@ -74,8 +74,8 @@ void SambaMount::initSambaMounts()
 
     m_newMountItem = new QListWidgetItem();
     m_newMountItem->setIcon(QIcon::fromTheme("applications-education-miscellaneous"));
-    m_newMountItem->setText("New Mount");
-    m_newMountItem->setData(Qt::UserRole, QVariant("New Mount"));
+    m_newMountItem->setText(i18n("New Share"));
+    m_newMountItem->setData(Qt::UserRole, QVariant(i18n("New Share")));
     m_newMountItem->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(widget));
 
     m_ui->mountList->addItem(m_newMountItem);

@@ -25,6 +25,7 @@
 #include <ksharedconfig.h>
 
 #include <QDebug>
+#include <unistd.h>
 using namespace KAuth;
 
 OnStart::OnStart(QObject* parent): QObject(parent)
@@ -55,6 +56,7 @@ void OnStart::mountSamba(KConfigGroup group)
     Action readAction("org.kde.sambamounter.mount");
     readAction.setHelperID("org.kde.sambamounter");
 
+    readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", ""));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));

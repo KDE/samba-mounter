@@ -27,6 +27,7 @@
 #include <KAuth/Action>
 #include <KAuth/ActionWatcher>
 #include <kpluginfactory.h>
+#include <unistd.h>
 
 using namespace KAuth;
 
@@ -177,6 +178,7 @@ void SambaMount::mountSamba(KConfigGroup group)
     Action readAction("org.kde.sambamounter.mount");
     readAction.setHelperID("org.kde.sambamounter");
 
+    readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", ""));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));

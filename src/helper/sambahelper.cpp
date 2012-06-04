@@ -29,6 +29,7 @@
 ActionReply SambaHelper::mount(QVariantMap args)
 {
     QString ip = args["ip"].toString();
+    QString uid = args["uid"].toString();
     QString sambaDir = args["sambaDir"].toString();
     QString mountPoint = args["mountPoint"].toString();
 
@@ -38,7 +39,7 @@ ActionReply SambaHelper::mount(QVariantMap args)
     arguments.append(QString("//") + ip + sambaDir);
     arguments.append(mountPoint);
     arguments.append("-o");
-    arguments.append("guest,uid=1000");
+    arguments.append("guest,uid=" + uid);
 
     QProcess proc;
     proc.start("mount", arguments);

@@ -262,7 +262,7 @@ void MountInfo::autoFillMountName()
         return;
     }
 
-    QString name = KUrl(sambaRequester->lineEdit()->text()).host();
+    QString name = KUrl(sambaRequester->lineEdit()->text()).fileName();
 
     if (!checkMountPoint(name)) {
         setResult(working2, Empty);

@@ -9,8 +9,9 @@ X-KDE-Library=sambamount
 X-KDE-ParentApp=kcontrol
 
 X-KDE-System-Settings-Parent-Category=network-and-connectivity
+X-KDE-System-Settings-Parent-Category=sharing
 
-Name=Samba Mount
+Name=Network Drivers
 
 Comment=Configure mounts managed by KDE instead of fstab
 

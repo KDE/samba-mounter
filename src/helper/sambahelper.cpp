@@ -18,6 +18,8 @@
 
 #include "sambahelper.h"
 
+#include <locale.h>
+
 #include <QtDebug>
 #include <QFile>
 #include <QTextStream>
@@ -30,37 +32,46 @@ ActionReply SambaHelper::mount(QVariantMap args)
 {
     QString ip = args["ip"].toString();
     QString uid = args["uid"].toString();
-    QString sambaDir = args["sambaDir"].toString();
-    QString mountPoint = args["mountPoint"].toString();
+    QString sambaDir = args["sambaDir"].toByteArray();
+    QString mountPoint = args["mountPoint"].toByteArray();
+    QString locale = args["locale"].toString();
+
+    setenv("LANG", locale.toAscii(), 1);
+    setlocale(LC_CTYPE, locale.toAscii());
 
     QStringList arguments;
-    arguments.append("-t");
-    arguments.append("cifs");
-    arguments.append(QString("//") + ip + sambaDir);
+    arguments.append(ip);
+    arguments.append(sambaDir);
     arguments.append(mountPoint);
-    arguments.append("-o");
-    arguments.append("guest,uid=" + uid);
+    arguments.append(uid);
 
     QProcess proc;
-    proc.start("mount", arguments);
+    proc.start("samba-realmounter", arguments);
     proc.waitForFinished();
 
+
     ActionReply reply;
-    reply.addData("output", proc.readAllStandardError());
+    reply.addData("output", proc.readAllStandardOutput());
+    reply.addData("error", proc.readAllStandardError());
 
     return reply;
 }
 
 ActionReply SambaHelper::umount(QVariantMap args)
 {
+    QString locale = args["locale"].toString();
+    setenv("LANG", locale.toAscii(), 1);
+    setlocale(LC_CTYPE, locale.toAscii());
+
     QStringList arguments;
-    arguments.append(args["mountPoint"].toString());
+    arguments.append(args["mountPoint"].toByteArray());
 
     QProcess proc;
-    proc.start("umount", arguments);
+    proc.start("samba-realumounter", arguments);
     proc.waitForFinished();
 
     return ActionReply::SuccessReply;
 }
 
 KDE4_AUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)
+// int main(int argc, char **argv) { setlocale(LC_CTYPE, "en_US.UTF-8"); return KAuth::HelperSupport::helperMain(argc, argv, "org.kde.sambamounter", new SambaHelper ()); }

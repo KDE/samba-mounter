@@ -14,55 +14,24 @@
  *  You should have received a copy of the GNU General Public License                *
  *  along with this program; if not, write to the Free Software                      *
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
- ************************************************************************************/
+ *************************************************************************************/
 
-#include "onstart.h"
-
-#include <QtGui/QApplication>
-
-#include <kauthaction.h>
-#include <kconfiggroup.h>
-#include <ksharedconfig.h>
-
+#include <QProcess>
 #include <QDebug>
-#include <unistd.h>
-using namespace KAuth;
 
-OnStart::OnStart(QObject* parent): QObject(parent)
+int main(int argc, char** argv)
 {
-    QMetaObject::invokeMethod(this, "mountConfiguredShares", Qt::QueuedConnection);
-}
+    QString mountPoint = QString::fromUtf8(QByteArray::fromBase64(argv[1]));
 
-OnStart::~OnStart()
-{
+    QStringList arguments;;
+    arguments.append(mountPoint);
 
-}
+    QProcess proc;
+    proc.start("umount", arguments);
+    proc.waitForFinished();
 
-void OnStart::mountConfiguredShares()
-{
-    KConfigGroup group = KSharedConfig::openConfig("samba-mounter")->group("mounts");
+    qDebug() << proc.readAllStandardError();
+    qDebug() << proc.readAllStandardOutput();
 
-    QStringList nameList = group.groupList();
-    Q_FOREACH(const QString &name, nameList) {
-        mountSamba(group.group(name));
-    }
-
-    qDebug() << "Exiting";
-    qApp->quit();
-}
-
-void OnStart::mountSamba(KConfigGroup group)
-{
-    Action readAction("org.kde.sambamounter.mount");
-    readAction.setHelperID("org.kde.sambamounter");
-
-    readAction.addArgument("uid", QString::number(getuid()));
-    readAction.addArgument("ip", group.readEntry("ip", ""));
-    readAction.addArgument("locale", getenv("LANG"));
-    readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
-    readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ActionReply reply = readAction.execute();
-
-    qDebug() << reply.data()["output"];
-    qDebug() << reply.data()["error"];
+    return 0;
 }

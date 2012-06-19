@@ -175,13 +175,14 @@ void SambaMount::addMount(KConfigGroup group)
 
 void SambaMount::mountSamba(KConfigGroup group)
 {
-    Action readAction("org.kde.sambamounter.mount");
+     Action readAction("org.kde.sambamounter.mount");
     readAction.setHelperID("org.kde.sambamounter");
 
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
-    readAction.addArgument("sambaDir", group.readEntry("sambaDir", ""));
-    readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));
+    readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
+    readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ActionReply reply = readAction.execute();
 
     kDebug() << reply.data()["output"];
@@ -193,7 +194,8 @@ void SambaMount::umountSamba(const QString& name)
     Action readAction("org.kde.sambamounter.umount");
     readAction.setHelperID("org.kde.sambamounter");
 
-    readAction.addArgument("mountPoint", group.readEntry("mountPoint", ""));
+    readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ActionReply reply = readAction.execute();
 
 }

@@ -70,6 +70,7 @@ class MountInfo : public QWidget, Ui::MountInfo
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;
 
+        QString m_id;
         QString m_host;
         QString m_ip;
         QString m_sambaDir;

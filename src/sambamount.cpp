@@ -55,6 +55,13 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 
 SambaMount::~SambaMount()
 {
+    QListWidgetItem* item = m_ui->mountList->currentItem();
+    QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
+    MountInfo *info = qobject_cast<MountInfo*>(widget);
+    if (info) {
+        info->saveConfig();
+    }
+
     delete m_ui;
 }
 

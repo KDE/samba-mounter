@@ -71,6 +71,7 @@ MountInfo::~MountInfo()
 
 void MountInfo::setConfigGroup(const QString& name)
 {
+    m_id = name;
     sambaRequester->setUrl(m_config.group(name).readEntry("fullSambaUrl"));
     shareName->setText(m_config.group(name).readEntry("mountName"));
 
@@ -224,7 +225,14 @@ void MountInfo::mountIsValid()
         return;
     }
 
-    KConfigGroup group = m_config.group(m_fullSambaUrl + "-" + m_mountPoint);
+    if (m_editMode) {
+        m_config.deleteGroup(m_id);
+    }
+
+    m_id = m_fullSambaUrl + "-" + m_mountPoint;
+
+    KConfigGroup group = m_config.group(m_id);
+
     saveConfig(group);
 
     if (m_editMode) {
@@ -238,7 +246,15 @@ void MountInfo::mountIsValid()
 
 void MountInfo::saveConfig()
 {
-    saveConfig(m_config.group(m_fullSambaUrl + "-" + m_mountPoint));
+    if (m_id.isEmpty() && !m_fullSambaUrl.isEmpty() && !m_mountPoint.isEmpty()) {
+        m_id = m_fullSambaUrl + "-" + m_mountPoint;
+    }
+
+    if (m_id.isEmpty()) {
+        return;
+    }
+
+    saveConfig(m_config.group(m_id));
 }
 
 void MountInfo::saveConfig(KConfigGroup group)

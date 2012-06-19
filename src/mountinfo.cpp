@@ -69,6 +69,11 @@ MountInfo::~MountInfo()
     delete m_painter2;
 }
 
+QString MountInfo::id() const
+{
+    return m_id;
+}
+
 void MountInfo::setConfigGroup(const QString& name)
 {
     m_id = name;

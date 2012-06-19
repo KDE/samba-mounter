@@ -224,9 +224,26 @@ void MountInfo::mountIsValid()
         return;
     }
 
-    kDebug() << "Saving mount";
-
     KConfigGroup group = m_config.group(m_fullSambaUrl + "-" + m_mountPoint);
+    saveConfig(group);
+
+    if (m_editMode) {
+        Q_EMIT mountEditted(group);
+        return;
+    }
+
+    Q_EMIT mountCreated(group);
+    setEditMode();
+}
+
+void MountInfo::saveConfig()
+{
+    saveConfig(m_config.group(m_fullSambaUrl + "-" + m_mountPoint));
+}
+
+void MountInfo::saveConfig(KConfigGroup group)
+{
+    kDebug() << "Saving mount";
 
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);
@@ -238,14 +255,6 @@ void MountInfo::mountIsValid()
     group.sync();
 
     QDir().mkdir(m_mountPoint);
-
-    if (m_editMode) {
-        Q_EMIT mountEditted(group);
-        return;
-    }
-
-    Q_EMIT mountCreated(group);
-    setEditMode();
 }
 
 void MountInfo::setEditMode()

@@ -51,6 +51,8 @@ class MountInfo : public QWidget, Ui::MountInfo
 
         void buttonClicked();
         void mountIsValid();
+        void saveConfig();
+        void saveConfig(KConfigGroup group);
 
     Q_SIGNALS:
         void checkDone();

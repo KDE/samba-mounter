@@ -60,6 +60,7 @@ SambaMount::~SambaMount()
     MountInfo *info = qobject_cast<MountInfo*>(widget);
     if (info) {
         info->saveConfig();
+        mountSamba(mounts().group(info->id()));
     }
 
     delete m_ui;

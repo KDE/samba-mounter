@@ -153,6 +153,7 @@ void SambaMount::rmBtnClicked()
 
     QString groupName = item->data(Qt::UserRole + 2).toString();
     umountSamba(groupName);
+    QDir().rmdir(mounts().group(groupName).readEntry("mountPoint", ""));
     mounts().deleteGroup(groupName);
 
     QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();

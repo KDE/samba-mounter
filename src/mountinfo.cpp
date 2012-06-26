@@ -27,6 +27,7 @@
 #include <solid/storageaccess.h>
 #include <KPixmapSequenceOverlayPainter>
 #include <KLineEdit>
+#include <KDesktopFile>
 
 MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 : QWidget(parent)
@@ -169,6 +170,14 @@ bool MountInfo::checkMountPoint(const KUrl& url)
     KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     networkDir.addPath("Network");
     dir.mkdir(networkDir.path());
+
+    KDesktopFile cfg(networkDir.toLocalFile(KUrl::AddTrailingSlash) + QString::fromLatin1(".directory"));
+    if (cfg.desktopGroup().readEntry("Icon", "").isEmpty()) {
+        cfg.desktopGroup().writeEntry("Icon", "folder-remote");
+        cfg.sync();
+
+        cfg.reparseConfiguration();
+    }
 
     m_mount = false;
     m_mountPoint = url.path();

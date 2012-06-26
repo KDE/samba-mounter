@@ -157,6 +157,7 @@ void SambaMount::rmBtnClicked()
     m_layout->removeWidget(widget);
     m_ui->mountList->removeItemWidget(item);
 
+    delete widget;
     delete item;
 }
 

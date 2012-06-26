@@ -156,6 +156,7 @@ void SambaMount::rmBtnClicked()
     mounts().deleteGroup(groupName);
 
     QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
+    item->setData(Qt::UserRole + 1, 0);
     m_layout->removeWidget(widget);
     m_ui->mountList->removeItemWidget(item);
 

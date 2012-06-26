@@ -63,6 +63,9 @@ class MountInfo : public QWidget, Ui::MountInfo
     private:
         void setEditMode();
         void autoFillMountName();
+        bool isIp(const QString &host);
+        void checkValidIp(const QString &url);
+        void checkValidHost(const QString &url);
 
     private:
         bool m_share, m_mount, m_editMode;

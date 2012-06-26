@@ -100,7 +100,6 @@ void MountInfo::checkValidSamba(const KUrl& url)
     m_share = false;
     setResult(working1, Empty);
 
-    m_host = url.host();
     m_fullSambaUrl = url.url();
     m_sambaDir = url.directory(KUrl::AppendTrailingSlash) + url.fileName();
 
@@ -111,8 +110,47 @@ void MountInfo::checkValidSamba(const KUrl& url)
         return;
     }
 
+    m_host = url.host();
+    if (isIp(m_host)) {
+        checkValidIp(m_host);
+        return;
+    }
+
+    checkValidHost(m_host);
+}
+
+bool MountInfo::isIp(const QString& host)
+{
+    QStringList split = host.split(".");
+    if (split.count() != 4) {
+        return false;
+    }
+
+    Q_FOREACH(const QString &oc, split) {
+        if (oc.toInt() > 254) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void MountInfo::checkValidIp(const QString& host)
+{
     m_painter1->start();
-    m_process->start("nmblookup", QStringList(m_host));
+
+    QStringList args;
+    args.append("-T");
+    args.append("-A");
+    args.append(host);
+    qDebug() << args;
+    m_process->start("nmblookup", args);
+}
+
+void MountInfo::checkValidHost(const QString& host)
+{
+    m_painter1->start();
+    m_process->start("nmblookup", QStringList(host));
 }
 
 void MountInfo::nameResolveFinished(int status)
@@ -132,7 +170,7 @@ void MountInfo::nameResolveFinished(int status)
     }
 
     QString line = output.split("\n").at(1);
-    QString ip = line.left(line.indexOf(" "));
+    QString ip = line.left(line.indexOf(" ")).trimmed();
 
     kDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {
@@ -142,7 +180,13 @@ void MountInfo::nameResolveFinished(int status)
         return;
     }
 
-    m_ip = ip;
+    if (!isIp(ip)) {
+        m_ip = m_host;
+        m_host = ip.toLower();
+    } else {
+        m_ip = ip;
+    }
+
     m_share = true;
     setResult(working1, Ok);
     Q_EMIT checkDone();

@@ -58,7 +58,7 @@ SambaMount::~SambaMount()
     QListWidgetItem* item = m_ui->mountList->currentItem();
     QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
     MountInfo *info = qobject_cast<MountInfo*>(widget);
-    if (info) {
+    if (info && !info->id().isEmpty()) {
         info->saveConfig();
         mountSamba(mounts().group(info->id()));
     }

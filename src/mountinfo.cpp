@@ -52,7 +52,7 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 
     error->setPalette(palette);
 
-    sambaRequester->setUrl(KUrl("smb:/"));
+    sambaRequester->setUrl(KUrl("smb://"));
 
     connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));

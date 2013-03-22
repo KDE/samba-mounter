@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     arguments.append(share);
     arguments.append(mountPoint);
     arguments.append("-o");
-    arguments.append("guest,uid=" + uid);
+    arguments.append("guest,sec=ntlmv2,uid=" + uid);
 
     QProcess proc;
     proc.start("mount", arguments);

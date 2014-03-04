@@ -169,8 +169,14 @@ void MountInfo::nameResolveFinished(int status)
         return;
     }
 
-    QString line = output.split("\n").at(1);
-    QString ip = line.left(line.indexOf(" ")).trimmed();
+    QString ipLine;
+    const QStringList lines = output.split("\n");
+    Q_FOREACH(const QString line, lines) {
+        if (line.contains(m_host)) {
+            ipLine = line;
+        }
+    }
+    QString ip = ipLine.left(ipLine.indexOf(" ")).trimmed();
 
     kDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {

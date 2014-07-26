@@ -61,6 +61,9 @@ void OnStart::mountSamba(KConfigGroup group)
     readAction.addArgument("locale", getenv("LANG"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
+    readAction.addArgument("username", group.readEntry("username", "none"));
+    readAction.addArgument("password", group.readEntry("password", "none"));
+
     ActionReply reply = readAction.execute();
 
     qDebug() << reply.data()["output"];

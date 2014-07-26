@@ -80,6 +80,8 @@ void MountInfo::setConfigGroup(const QString& name)
     m_id = name;
     sambaRequester->setUrl(m_config.group(name).readEntry("fullSambaUrl"));
     shareName->setText(m_config.group(name).readEntry("mountName"));
+    username->setText(m_config.group(name).readEntry("username"));
+    password->setText(m_config.group(name).readEntry("password"));
 
     setEditMode();
 }
@@ -286,6 +288,7 @@ void MountInfo::buttonClicked()
 void MountInfo::mountIsValid()
 {
     disconnect(this, SIGNAL(checkDone()), this, SLOT(mountIsValid()));
+
     if (!m_mount || !m_share) {
         return;
     }
@@ -332,6 +335,8 @@ void MountInfo::saveConfig(KConfigGroup group)
     group.writeEntry("sambaDir", m_sambaDir);
     group.writeEntry("fullSambaUrl", m_fullSambaUrl);
     group.writeEntry("mountName", m_mountName);
+    group.writeEntry("username", username->text());
+    group.writeEntry("password", password->text());
 
     group.sync();
 

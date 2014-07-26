@@ -27,6 +27,8 @@ int main(int argc, char** argv)
     share.append(argv[1]);
     share.append(sambaDir);
     QString uid (argv[4]);
+    QString username(argv[5]);
+    QString password(argv[6]);
 
     QStringList arguments;
     arguments.append("-t");
@@ -34,8 +36,20 @@ int main(int argc, char** argv)
     arguments.append(share);
     arguments.append(mountPoint);
     arguments.append("-o");
-    arguments.append("guest,sec=ntlmv2,uid=" + uid);
 
+    QString options;
+    if (username == "none") {
+        options.append("guest");
+    } else {
+        options.append("user=" + username);
+    }
+    if (password != "none") {
+        options.append(",password=" + password);
+    }
+
+    options.append(",sec=ntlmv2,uid=" + uid);
+
+    arguments.append(options);
     QProcess proc;
     proc.start("mount", arguments);
     proc.waitForFinished();

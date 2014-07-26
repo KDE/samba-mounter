@@ -35,6 +35,8 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QString sambaDir = args["sambaDir"].toByteArray();
     QString mountPoint = args["mountPoint"].toByteArray();
     QString locale = args["locale"].toString();
+    QString username = args["username"].toString();
+    QString password = args["password"].toString();
 
     setenv("LANG", locale.toAscii(), 1);
     setlocale(LC_CTYPE, locale.toAscii());
@@ -44,6 +46,8 @@ ActionReply SambaHelper::mount(QVariantMap args)
     arguments.append(sambaDir);
     arguments.append(mountPoint);
     arguments.append(uid);
+    arguments.append(username);
+    arguments.append(password);
 
     QProcess proc;
     proc.start("samba-realmounter", arguments);

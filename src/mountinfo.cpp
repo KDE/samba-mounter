@@ -285,6 +285,7 @@ void MountInfo::buttonClicked()
 
 void MountInfo::mountIsValid()
 {
+    disconnect(this, SIGNAL(checkDone()), this, SLOT(mountIsValid()));
     if (!m_mount || !m_share) {
         return;
     }

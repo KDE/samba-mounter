@@ -38,8 +38,8 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QString username = args["username"].toString();
     QString password = args["password"].toString();
 
-    setenv("LANG", locale.toAscii(), 1);
-    setlocale(LC_CTYPE, locale.toAscii());
+    setenv("LANG", locale.toLocal8Bit(), 1);
+    setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;
     arguments.append(ip);
@@ -64,8 +64,8 @@ ActionReply SambaHelper::mount(QVariantMap args)
 ActionReply SambaHelper::umount(QVariantMap args)
 {
     QString locale = args["locale"].toString();
-    setenv("LANG", locale.toAscii(), 1);
-    setlocale(LC_CTYPE, locale.toAscii());
+    setenv("LANG", locale.toLocal8Bit(), 1);
+    setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;
     arguments.append(args["mountPoint"].toByteArray());

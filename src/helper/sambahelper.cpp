@@ -74,8 +74,8 @@ ActionReply SambaHelper::umount(QVariantMap args)
     proc.start("samba-realumounter", arguments);
     proc.waitForFinished();
 
-    return ActionReply::SuccessReply;
+    return ActionReply::SuccessReply();
 }
 
-KDE4_AUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)
+KAUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)
 // int main(int argc, char **argv) { setlocale(LC_CTYPE, "en_US.UTF-8"); return KAuth::HelperSupport::helperMain(argc, argv, "org.kde.sambamounter", new SambaHelper ()); }

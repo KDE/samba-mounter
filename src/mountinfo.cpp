@@ -19,7 +19,7 @@
 #include "mountinfo.h"
 
 #include <QtCore/QProcess>
-#include <QtGui/QDesktopServices>
+#include <QDir>
 
 #include <QDebug>
 #include <KColorScheme>
@@ -206,7 +206,7 @@ void MountInfo::nameResolveFinished(int status)
 bool MountInfo::checkMountPoint(const QString& name)
 {
     m_mountName = name;
-    QUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QUrl url(QDir::homePath());
     url = url.adjusted(QUrl::StripTrailingSlash);
     url.setPath(url.path() + '/' + "Network");
     url = url.adjusted(QUrl::StripTrailingSlash);
@@ -221,7 +221,7 @@ bool MountInfo::checkMountPoint(const QUrl &url)
     QString urlPath = url.path();
     QDir dir(urlPath);
 
-    QUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QUrl networkDir(QDir::homePath());
     networkDir = networkDir.adjusted(QUrl::StripTrailingSlash);
     networkDir.setPath(networkDir.path() + '/' + "Network");
     dir.mkdir(networkDir.path());

@@ -41,11 +41,11 @@ class MountInfo : public QWidget, Ui::MountInfo
         void setConfigGroup(const QString &name);
 
     public Q_SLOTS:
-        void checkValidSamba(const KUrl &url);
+        void checkValidSamba(const QUrl &url);
         void checkValidSamba(const QString &url);
         void nameResolveFinished(int status);
 
-        bool checkMountPoint(const KUrl &url);
+        bool checkMountPoint(const QUrl &url);
         bool checkMountPoint(const QString& name);
 
         void setResult(QLabel *lbl, Status status);

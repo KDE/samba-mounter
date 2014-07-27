@@ -115,7 +115,7 @@ void SambaMount::mountCreated(KConfigGroup group)
     qDebug() << "New Mount Created";
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));
-    item->setText(KUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
+    item->setText(QUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(qobject_cast<QWidget *>(sender())));
     item->setData(Qt::UserRole + 2, group.name());
@@ -178,7 +178,7 @@ void SambaMount::addMount(KConfigGroup group)
 
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));
-    item->setText(KUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
+    item->setText(QUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(info));
     item->setData(Qt::UserRole + 2, group.name());

@@ -52,9 +52,9 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 
     error->setPalette(palette);
 
-    sambaRequester->setUrl(KUrl("smb://"));
+    sambaRequester->setUrl(QUrl("smb://"));
 
-    connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
+    connect(sambaRequester, SIGNAL(urlSelected(QUrl)), SLOT(checkValidSamba(QUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 
@@ -88,11 +88,11 @@ void MountInfo::setConfigGroup(const QString& name)
 
 void MountInfo::checkValidSamba(const QString& url)
 {
-    checkValidSamba(KUrl(url));
     qDebug() << url;
+    checkValidSamba(QUrl(url));
 }
 
-void MountInfo::checkValidSamba(const KUrl& url)
+void MountInfo::checkValidSamba(const QUrl &url)
 {
     qDebug() << url;
     qDebug() << "Host: " << url.host();
@@ -103,7 +103,7 @@ void MountInfo::checkValidSamba(const KUrl& url)
     setResult(working1, Empty);
 
     m_fullSambaUrl = url.url();
-    m_sambaDir = url.directory(KUrl::AppendTrailingSlash) + url.fileName();
+    m_sambaDir = url.path() + url.fileName();
 
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
         error->setText(i18n("You must select a folder"));
@@ -206,24 +206,27 @@ void MountInfo::nameResolveFinished(int status)
 bool MountInfo::checkMountPoint(const QString& name)
 {
     m_mountName = name;
-    KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    url.addPath("Network");
-    url.addPath(name);
+    QUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    url = url.adjusted(QUrl::StripTrailingSlash);
+    url.setPath(url.path() + '/' + "Network");
+    url = url.adjusted(QUrl::StripTrailingSlash);
+    url.setPath(url.path() + '/' + name);
 
-    return checkMountPoint(KUrl(url));
+    return checkMountPoint(QUrl(url));
 }
 
-bool MountInfo::checkMountPoint(const KUrl& url)
+bool MountInfo::checkMountPoint(const QUrl &url)
 {
     qDebug() << url;
     QString urlPath = url.path();
     QDir dir(urlPath);
 
-    KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    networkDir.addPath("Network");
+    QUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    networkDir = networkDir.adjusted(QUrl::StripTrailingSlash);
+    networkDir.setPath(networkDir.path() + '/' + "Network");
     dir.mkdir(networkDir.path());
 
-    KDesktopFile cfg(networkDir.toLocalFile(KUrl::AddTrailingSlash) + QString::fromLatin1(".directory"));
+    KDesktopFile cfg(networkDir.toLocalFile() + QString::fromLatin1(".directory"));
     if (cfg.desktopGroup().readEntry("Icon", "").isEmpty()) {
         cfg.desktopGroup().writeEntry("Icon", "folder-remote");
         cfg.sync();
@@ -357,7 +360,7 @@ void MountInfo::autoFillMountName()
         return;
     }
 
-    QString name = KUrl(sambaRequester->lineEdit()->text()).fileName();
+    QString name = QUrl(sambaRequester->lineEdit()->text()).fileName();
 
     if (!checkMountPoint(name)) {
         setResult(working2, Empty);

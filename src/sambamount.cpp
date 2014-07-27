@@ -22,10 +22,10 @@
 
 #include <QStackedLayout>
 
-#include <KAuth/Action>
-#include <KAuth/ActionWatcher>
 #include <QDebug>
 #include <QAction>
+#include <KAuthAction>
+#include <KAuthExecuteJob>
 #include <kpluginfactory.h>
 #include <unistd.h>
 #include <KSharedConfig>
@@ -189,28 +189,28 @@ void SambaMount::addMount(KConfigGroup group)
 
 void SambaMount::mountSamba(KConfigGroup group)
 {
-     Action readAction("org.kde.sambamounter.mount");
-    readAction.setHelperID("org.kde.sambamounter");
+    Action readAction("org.kde.sambamounter.mount");
+    readAction.setHelperId("org.kde.sambamounter");
 
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
     readAction.addArgument("locale", getenv("LANG"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ActionReply reply = readAction.execute();
+    ExecuteJob* reply = readAction.execute();
 
-    qDebug() << reply.data()["output"];
+    qDebug() << reply->data()["output"];
 }
 
 void SambaMount::umountSamba(const QString& name)
 {
     KConfigGroup group = mounts().group(name);
     Action readAction("org.kde.sambamounter.umount");
-    readAction.setHelperID("org.kde.sambamounter");
+    readAction.setHelperId("org.kde.sambamounter");
 
     readAction.addArgument("locale", getenv("LANG"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ActionReply reply = readAction.execute();
+    ExecuteJob* reply = readAction.execute();
 
 }
 

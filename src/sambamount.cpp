@@ -36,7 +36,7 @@ K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
 K_EXPORT_PLUGIN(SambaMountFactory("sambamount", "sambamount"))
 
 SambaMount::SambaMount(QWidget *parent, const QVariantList&)
-: KCModule(SambaMountFactory::componentData(), parent)
+: KCModule(parent)
 , m_layout(new QStackedLayout)
 {
     setButtons(KCModule::Help);

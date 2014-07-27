@@ -21,7 +21,7 @@
 #include <QtCore/QProcess>
 #include <QtGui/QDesktopServices>
 
-#include <KDebug>
+#include <QDebug>
 #include <KColorScheme>
 #include <solid/device.h>
 #include <solid/storageaccess.h>
@@ -88,15 +88,15 @@ void MountInfo::setConfigGroup(const QString& name)
 
 void MountInfo::checkValidSamba(const QString& url)
 {
-    kDebug() << url;
     checkValidSamba(KUrl(url));
+    qDebug() << url;
 }
 
 void MountInfo::checkValidSamba(const KUrl& url)
 {
-    kDebug() << url;
-    kDebug() << "Host: " << url.host();
-    kDebug() << "Dir: " << url.directory(KUrl::AppendTrailingSlash) + url.fileName();
+    qDebug() << url;
+    qDebug() << "Host: " << url.host();
+    qDebug() << "Dir: " << url.path() + url.fileName();
     m_process->close();
 
     m_share = false;
@@ -157,12 +157,12 @@ void MountInfo::checkValidHost(const QString& host)
 
 void MountInfo::nameResolveFinished(int status)
 {
-    kDebug() << "Status: " << status;
+    qDebug() << "Status: " << status;
 
     m_painter1->stop();
 
     QString output = m_process->readAllStandardOutput();
-    kDebug() << output;
+    qDebug() << output;
 
     if (output.isEmpty()) {
         error->setText(i18n("Couldn't get the server IP"));
@@ -180,7 +180,7 @@ void MountInfo::nameResolveFinished(int status)
     }
     QString ip = ipLine.left(ipLine.indexOf(" ")).trimmed();
 
-    kDebug() << "Ip: " << ip;
+    qDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {
         error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
@@ -215,7 +215,7 @@ bool MountInfo::checkMountPoint(const QString& name)
 
 bool MountInfo::checkMountPoint(const KUrl& url)
 {
-    kDebug() << url;
+    qDebug() << url;
     QString urlPath = url.path();
     QDir dir(urlPath);
 
@@ -327,7 +327,7 @@ void MountInfo::saveConfig()
 
 void MountInfo::saveConfig(KConfigGroup group)
 {
-    kDebug() << "Saving mount";
+    qDebug() << "Saving mount";
 
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);

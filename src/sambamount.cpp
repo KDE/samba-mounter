@@ -22,10 +22,10 @@
 
 #include <QStackedLayout>
 
-#include <KDebug>
 #include <KAction>
 #include <KAuth/Action>
 #include <KAuth/ActionWatcher>
+#include <QDebug>
 #include <kpluginfactory.h>
 #include <unistd.h>
 
@@ -112,7 +112,7 @@ void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* p
 
 void SambaMount::mountCreated(KConfigGroup group)
 {
-    kDebug() << "New Mount Created";
+    qDebug() << "New Mount Created";
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));
     item->setText(KUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
@@ -198,7 +198,7 @@ void SambaMount::mountSamba(KConfigGroup group)
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ActionReply reply = readAction.execute();
 
-    kDebug() << reply.data()["output"];
+    qDebug() << reply.data()["output"];
 }
 
 void SambaMount::umountSamba(const QString& name)

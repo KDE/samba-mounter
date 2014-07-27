@@ -13,7 +13,7 @@ target_link_libraries(kcm_sambamount
     KF5::KIOWidgets
     KF5::Auth
     KF5::Solid
-    KF5::Config
+    KF5::ConfigCore
 )
 
 install(TARGETS kcm_sambamount DESTINATION ${PLUGIN_INSTALL_DIR})

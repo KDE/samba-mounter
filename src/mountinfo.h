@@ -21,7 +21,8 @@
 
 #include "ui_mount.h"
 
-#include <QtGui/QWidget>
+#include <QWidget>
+#include <KConfigGroup>
 
 class QProcess;
 class KPixmapSequenceOverlayPainter;

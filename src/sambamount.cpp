@@ -22,12 +22,13 @@
 
 #include <QStackedLayout>
 
-#include <KAction>
 #include <KAuth/Action>
 #include <KAuth/ActionWatcher>
 #include <QDebug>
+#include <QAction>
 #include <kpluginfactory.h>
 #include <unistd.h>
+#include <KSharedConfig>
 
 using namespace KAuth;
 

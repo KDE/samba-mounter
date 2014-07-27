@@ -21,7 +21,7 @@
 
 #include <QtCore/QObject>
 
-#include <kconfiggroup.h>
+#include <KConfigGroup>
 
 class OnStart : public QObject
 {

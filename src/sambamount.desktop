@@ -8,7 +8,7 @@ X-KDE-ServiceTypes=KCModule
 X-KDE-Library=sambamount
 X-KDE-ParentApp=kcontrol
 
-X-KDE-System-Settings-Parent-Category=network
+X-KDE-System-Settings-Parent-Category=network-and-connectivity
 X-KDE-System-Settings-Parent-Category=sharing
 
 Name=Network Drivers

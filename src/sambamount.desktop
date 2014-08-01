@@ -5,7 +5,7 @@ Type=Service
 
 X-KDE-ServiceTypes=KCModule
 
-X-KDE-Library=sambamount
+X-KDE-Library=kcm_sambamount
 X-KDE-ParentApp=kcontrol
 
 X-KDE-System-Settings-Parent-Category=network

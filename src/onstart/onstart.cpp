@@ -66,6 +66,7 @@ void OnStart::mountSamba(KConfigGroup group)
     readAction.addArgument("password", group.readEntry("password", "none"));
 
     ExecuteJob* reply = readAction.execute();
+    reply->exec();
 
     qDebug() << reply->data()["output"];
     qDebug() << reply->data()["error"];

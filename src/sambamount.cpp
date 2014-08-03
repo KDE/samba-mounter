@@ -198,6 +198,7 @@ void SambaMount::mountSamba(KConfigGroup group)
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ExecuteJob* reply = readAction.execute();
+    reply->exec();
 
     qDebug() << reply->data()["output"];
 }
@@ -211,6 +212,7 @@ void SambaMount::umountSamba(const QString& name)
     readAction.addArgument("locale", getenv("LANG"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ExecuteJob* reply = readAction.execute();
+    reply->exec();
 
 }
 

@@ -290,6 +290,7 @@ void MountInfo::buttonClicked()
 
 void MountInfo::mountIsValid()
 {
+    qDebug() << "Mount is valid";
     disconnect(this, SIGNAL(checkDone()), this, SLOT(mountIsValid()));
 
     if (!m_mount || !m_share) {
@@ -306,6 +307,7 @@ void MountInfo::mountIsValid()
 
     saveConfig(group);
 
+    qDebug() << "Edit mode:" << m_editMode;
     if (m_editMode) {
         Q_EMIT mountEditted(group);
         return;

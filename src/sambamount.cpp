@@ -189,6 +189,7 @@ void SambaMount::addMount(KConfigGroup group)
 
 void SambaMount::mountSamba(KConfigGroup group)
 {
+    qDebug() << "Mounting samba: " << group.name();
     Action readAction("org.kde.sambamounter.mount");
     readAction.setHelperId("org.kde.sambamounter");
 

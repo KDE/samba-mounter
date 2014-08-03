@@ -140,6 +140,13 @@ void SambaMount::mountCreated(KConfigGroup group)
     mountSamba(group);
 }
 
+void SambaMount::mountEditted(KConfigGroup group)
+{
+    qDebug() << "Mount editted" << group.name();
+    umountSamba(group.name());
+    mountSamba(group);
+}
+
 void SambaMount::addBtnClicked()
 {
     m_ui->mountList->setCurrentItem(m_newMountItem, QItemSelectionModel::SelectCurrent);
@@ -174,6 +181,7 @@ KConfigGroup SambaMount::mounts()
 void SambaMount::addMount(KConfigGroup group)
 {
     MountInfo *info = new MountInfo(mounts(), this);
+    connect(info, SIGNAL(mountEditted(KConfigGroup)), SLOT(mountEditted(KConfigGroup)));
     info->setConfigGroup(group.name());
     m_layout->addWidget(info);
 

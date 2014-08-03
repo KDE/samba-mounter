@@ -39,6 +39,7 @@ private Q_SLOTS:
     void initSambaMounts();
     void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void mountCreated(KConfigGroup group);
+    void mountEditted(KConfigGroup group);
 
     void addBtnClicked();
     void rmBtnClicked();

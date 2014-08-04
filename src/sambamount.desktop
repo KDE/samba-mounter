@@ -9,7 +9,6 @@ X-KDE-Library=kcm_sambamount
 X-KDE-ParentApp=kcontrol
 
 X-KDE-System-Settings-Parent-Category=network
-X-KDE-System-Settings-Parent-Category=sharing
 
 Name=Network Drivers
 

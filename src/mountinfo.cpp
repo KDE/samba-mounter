@@ -96,15 +96,21 @@ void MountInfo::checkValidSamba(const QUrl &url)
 {
     qDebug() << url;
     qDebug() << "Host: " << url.host();
-    qDebug() << "Dir: " << url.path() + url.fileName();
     m_process->close();
 
     m_share = false;
     setResult(working1, Empty);
 
     m_fullSambaUrl = url.url();
-    m_sambaDir = url.path() + url.fileName();
+    //If path and file are the same thing for example smb://foo/public
+    if (url.path().indexOf(url.fileName()) == 1) {
+        m_sambaDir = url.path();
+    } else {
+        m_sambaDir = url.path() + "/" + url.fileName();
+    }
 
+    qDebug() << "fullSambaUrl" << m_fullSambaUrl;
+    qDebug() << "sambaDir:" << m_sambaDir;
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
         error->setText(i18n("You must select a folder"));
         setResult(working1, Fail);

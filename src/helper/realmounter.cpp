@@ -21,6 +21,11 @@
 
 int main(int argc, char** argv)
 {
+    if (argc < 7) {
+        qDebug() << "Not enough arguments";
+        return 1;
+    }
+
     QString sambaDir = QString::fromUtf8(QByteArray::fromBase64(argv[2]));
     QString mountPoint = QString::fromUtf8(QByteArray::fromBase64(argv[3]));
     QString share = QString::fromUtf8("//");

@@ -38,6 +38,13 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QString username = args["username"].toString();
     QString password = args["password"].toString();
 
+    if (username.isEmpty()) {
+        username = "none";
+    }
+    if (password.isEmpty()) {
+        password = "none";
+    }
+
     setenv("LANG", locale.toLocal8Bit(), 1);
     setlocale(LC_CTYPE, locale.toLocal8Bit());
 

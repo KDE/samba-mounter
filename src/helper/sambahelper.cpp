@@ -35,6 +35,7 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QString sambaDir = args["sambaDir"].toByteArray();
     QString mountPoint = args["mountPoint"].toByteArray();
     QString locale = args["locale"].toString();
+    QString path = args["path"].toString();
     QString username = args["username"].toString();
     QString password = args["password"].toString();
 
@@ -46,6 +47,7 @@ ActionReply SambaHelper::mount(QVariantMap args)
     }
 
     setenv("LANG", locale.toLocal8Bit(), 1);
+    setenv("PATH", path.toLocal8Bit(), 1);
     setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;
@@ -71,7 +73,9 @@ ActionReply SambaHelper::mount(QVariantMap args)
 ActionReply SambaHelper::umount(QVariantMap args)
 {
     QString locale = args["locale"].toString();
+    QString path = args["path"].toString();
     setenv("LANG", locale.toLocal8Bit(), 1);
+    setenv("PATH", path.toLocal8Bit(), 1);
     setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;

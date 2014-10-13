@@ -204,6 +204,7 @@ void SambaMount::mountSamba(KConfigGroup group)
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
     readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ExecuteJob* reply = readAction.execute();
@@ -219,6 +220,7 @@ void SambaMount::umountSamba(const QString& name)
     readAction.setHelperId("org.kde.sambamounter");
 
     readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     ExecuteJob* reply = readAction.execute();
     reply->exec();

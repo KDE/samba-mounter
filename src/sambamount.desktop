@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=kcmshell4 sambamount
+Exec=kcmshell5 sambamount
 Icon=preferences-system-network-sharing
 Type=Service
 

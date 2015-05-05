@@ -48,10 +48,12 @@ private:
     void addMount(KConfigGroup group);
     KConfigGroup mounts();
 
-    void mountSamba(KConfigGroup group);
-    void umountSamba(const QString &name);
+    bool mountSamba(KConfigGroup group);
+    bool umountSamba(const QString &name);
 
 private:
+    bool executeJob(KAuth::ExecuteJob* reply);
+
     QListWidgetItem *m_newMountItem;
     Ui::KCMSambaMount *m_ui;
     QStackedLayout *m_layout;

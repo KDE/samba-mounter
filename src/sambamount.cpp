@@ -24,11 +24,12 @@
 
 #include <QDebug>
 #include <QAction>
+#include <QMessageBox>
 #include <KAuthAction>
 #include <KAuthExecuteJob>
-#include <kpluginfactory.h>
-#include <unistd.h>
+#include <KPluginFactory>
 #include <KSharedConfig>
+#include <unistd.h>
 
 using namespace KAuth;
 
@@ -143,8 +144,8 @@ void SambaMount::mountCreated(KConfigGroup group)
 void SambaMount::mountEditted(KConfigGroup group)
 {
     qDebug() << "Mount editted" << group.name();
-    umountSamba(group.name());
-    mountSamba(group);
+    if (umountSamba(group.name()))
+        mountSamba(group);
 }
 
 void SambaMount::addBtnClicked()
@@ -195,7 +196,7 @@ void SambaMount::addMount(KConfigGroup group)
     m_ui->mountList->addItem(item);
 }
 
-void SambaMount::mountSamba(KConfigGroup group)
+bool SambaMount::mountSamba(KConfigGroup group)
 {
     qDebug() << "Mounting samba: " << group.name();
     Action readAction("org.kde.sambamounter.mount");
@@ -207,13 +208,10 @@ void SambaMount::mountSamba(KConfigGroup group)
     readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ExecuteJob* reply = readAction.execute();
-    reply->exec();
-
-    qDebug() << reply->data()["output"];
+    return executeJob(readAction.execute());
 }
 
-void SambaMount::umountSamba(const QString& name)
+bool SambaMount::umountSamba(const QString& name)
 {
     KConfigGroup group = mounts().group(name);
     Action readAction("org.kde.sambamounter.umount");
@@ -222,9 +220,18 @@ void SambaMount::umountSamba(const QString& name)
     readAction.addArgument("locale", getenv("LANG"));
     readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ExecuteJob* reply = readAction.execute();
-    reply->exec();
+    return executeJob(readAction.execute());
+}
 
+bool SambaMount::executeJob(ExecuteJob* reply)
+{
+    bool ret = reply->exec();
+    if (ret) {
+        qDebug() << "executed" << reply->action().name() << reply->data()["output"];
+    } else {
+        QMessageBox::warning(this, i18n("Error executing '%1'", reply->action().name()), i18n("Error %1: %2", reply->error(), reply->errorText()));
+    }
+    return ret;
 }
 
 #include "sambamount.moc"

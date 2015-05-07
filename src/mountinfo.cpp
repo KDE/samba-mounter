@@ -45,7 +45,6 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
     m_painter2->setWidget(working2);
 
     KColorScheme scheme(QPalette::Normal);
-    KColorScheme::ForegroundRole role;
 
     QPalette palette(error->palette());
     palette.setColor(QPalette::Foreground, scheme.foreground(KColorScheme::NegativeText).color());
@@ -88,7 +87,6 @@ void MountInfo::setConfigGroup(const QString& name)
 
 void MountInfo::checkValidSamba(const QString& url)
 {
-    qDebug() << url;
     checkValidSamba(QUrl(url));
 }
 
@@ -106,11 +104,10 @@ void MountInfo::checkValidSamba(const QUrl &url)
     if (url.path().indexOf(url.fileName()) == 1) {
         m_sambaDir = url.path();
     } else {
-        m_sambaDir = url.path() + "/" + url.fileName();
+        m_sambaDir = url.path() + '/' + url.fileName();
     }
 
-    qDebug() << "fullSambaUrl" << m_fullSambaUrl;
-    qDebug() << "sambaDir:" << m_sambaDir;
+    qDebug() << "fullSambaUrl" << m_fullSambaUrl << "sambaDir:" << m_sambaDir;
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
         error->setText(i18n("You must select a folder"));
         setResult(working1, Fail);
@@ -119,17 +116,15 @@ void MountInfo::checkValidSamba(const QUrl &url)
     }
 
     m_host = url.host();
-    if (isIp(m_host)) {
+    if (isIp(m_host))
         checkValidIp(m_host);
-        return;
-    }
-
-    checkValidHost(m_host);
+    else
+        checkValidHost(m_host);
 }
 
 bool MountInfo::isIp(const QString& host)
 {
-    QStringList split = host.split(".");
+    QStringList split = host.split('.');
     if (split.count() != 4) {
         return false;
     }
@@ -151,7 +146,7 @@ void MountInfo::checkValidIp(const QString& host)
     args.append("-T");
     args.append("-A");
     args.append(host);
-    qDebug() << args;
+    qDebug() << "valid IP" << args;
     m_process->start("nmblookup", args);
 }
 
@@ -168,7 +163,7 @@ void MountInfo::nameResolveFinished(int status)
     m_painter1->stop();
 
     QString output = m_process->readAllStandardOutput();
-    qDebug() << output;
+    qDebug() << "name resolved:" << output;
 
     if (output.isEmpty()) {
         error->setText(i18n("Couldn't get the server IP"));
@@ -204,7 +199,7 @@ void MountInfo::nameResolveFinished(int status)
     m_share = true;
     setResult(working1, Ok);
     Q_EMIT checkDone();
-    error->setText("");
+    error->clear();
 
     autoFillMountName();
 }
@@ -223,7 +218,7 @@ bool MountInfo::checkMountPoint(const QString& name)
 
 bool MountInfo::checkMountPoint(const QUrl &url)
 {
-    qDebug() << url;
+    qDebug() << "ckecking mount point..." << url;
     QString urlPath = url.path();
     QDir dir(urlPath);
 
@@ -263,7 +258,7 @@ bool MountInfo::checkMountPoint(const QUrl &url)
 
     m_mount = true;
     setResult(working2, Ok);
-    error->setText("");
+    error->clear();
     Q_EMIT checkDone();
 
     return true;
@@ -368,13 +363,14 @@ void MountInfo::autoFillMountName()
         return;
     }
 
-    QString name = QUrl(sambaRequester->lineEdit()->text()).fileName();
+    QString name = sambaRequester->url().fileName();
 
     if (!checkMountPoint(name)) {
         setResult(working2, Empty);
-        error->setText("");
+        error->clear();
         return;
     }
 
     shareName->setText(name);
 }
+

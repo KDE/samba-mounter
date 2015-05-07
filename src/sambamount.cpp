@@ -73,11 +73,8 @@ SambaMount::~SambaMount()
 void SambaMount::initSambaMounts()
 {
     KConfigGroup configMounts = mounts();
-    if (!configMounts.groupList().isEmpty()) {
-        QStringList ids = configMounts.groupList();
-        Q_FOREACH(const QString &id, ids) {
-            addMount(configMounts.group(id));
-        }
+    Q_FOREACH(const QString &id, configMounts.groupList()) {
+        addMount(configMounts.group(id));
     }
 
     MountInfo *widget = new MountInfo(mounts(), this);
@@ -204,8 +201,8 @@ bool SambaMount::mountSamba(KConfigGroup group)
 
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
-    readAction.addArgument("locale", getenv("LANG"));
-    readAction.addArgument("path", getenv("PATH"));
+    readAction.addArgument("locale", qgetenv("LANG"));
+    readAction.addArgument("path", qgetenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     return executeJob(readAction.execute());
@@ -217,8 +214,8 @@ bool SambaMount::umountSamba(const QString& name)
     Action readAction("org.kde.sambamounter.umount");
     readAction.setHelperId("org.kde.sambamounter");
 
-    readAction.addArgument("locale", getenv("LANG"));
-    readAction.addArgument("path", getenv("PATH"));
+    readAction.addArgument("locale", qgetenv("LANG"));
+    readAction.addArgument("path", qgetenv("PATH"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     return executeJob(readAction.execute());
 }

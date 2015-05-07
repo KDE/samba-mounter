@@ -22,10 +22,12 @@
 #include "ui_mount.h"
 
 #include <QWidget>
+#include <KIO/AuthInfo>
 #include <KConfigGroup>
 
 class QProcess;
 class KPixmapSequenceOverlayPainter;
+class OrgKdeKPasswdServerInterface;
 class MountInfo : public QWidget, Ui::MountInfo
 {
     Q_OBJECT
@@ -35,7 +37,7 @@ class MountInfo : public QWidget, Ui::MountInfo
             Ok      = 2,
             Fail    = 4
         };
-        explicit MountInfo(KConfigGroup config, QWidget* parent = 0);
+        explicit MountInfo(OrgKdeKPasswdServerInterface* interface, KConfigGroup config, QWidget* parent = 0);
         virtual ~MountInfo();
 
         QString id() const;
@@ -69,11 +71,13 @@ class MountInfo : public QWidget, Ui::MountInfo
         void checkValidHost(const QString &url);
 
     private:
+        void authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info);
         bool m_share, m_mount, m_editMode;
         QProcess *m_process;
         KConfigGroup m_config;
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;
+        OrgKdeKPasswdServerInterface* m_interface;
 
         QString m_id;
         QString m_host;

@@ -53,6 +53,8 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
             this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
 
     QMetaObject::invokeMethod(this, "initSambaMounts", Qt::QueuedConnection);
+
+    m_interface = new OrgKdeKPasswdServerInterface("org.kde.kpasswdserver", "/modules/kpasswdserver", QDBusConnection::sessionBus(), this);
 }
 
 SambaMount::~SambaMount()
@@ -77,7 +79,7 @@ void SambaMount::initSambaMounts()
         addMount(configMounts.group(id));
     }
 
-    MountInfo *widget = new MountInfo(mounts(), this);
+    MountInfo *widget = new MountInfo(m_interface, mounts(), this);
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -121,7 +123,7 @@ void SambaMount::mountCreated(KConfigGroup group)
 
     m_ui->mountList->addItem(item);
 
-    MountInfo *widget = new MountInfo(mounts(), this);
+    MountInfo *widget = new MountInfo(m_interface, mounts(), this);
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -178,7 +180,7 @@ KConfigGroup SambaMount::mounts()
 
 void SambaMount::addMount(KConfigGroup group)
 {
-    MountInfo *info = new MountInfo(mounts(), this);
+    MountInfo *info = new MountInfo(m_interface, mounts(), this);
     connect(info, SIGNAL(mountEditted(KConfigGroup)), SLOT(mountEditted(KConfigGroup)));
     info->setConfigGroup(group.name());
     m_layout->addWidget(info);

@@ -21,9 +21,11 @@
 
 #include <kcmodule.h>
 #include <KConfigGroup>
+#include <KIO/AuthInfo>
 
 class QStackedLayout;
 class QListWidgetItem;
+class OrgKdeKPasswdServerInterface;
 namespace Ui {
     class KCMSambaMount;
 }
@@ -50,13 +52,12 @@ private:
 
     bool mountSamba(KConfigGroup group);
     bool umountSamba(const QString &name);
-
-private:
     bool executeJob(KAuth::ExecuteJob* reply);
 
     QListWidgetItem *m_newMountItem;
     Ui::KCMSambaMount *m_ui;
     QStackedLayout *m_layout;
+    OrgKdeKPasswdServerInterface* m_interface;
 };
 
 #endif // sambamount_h

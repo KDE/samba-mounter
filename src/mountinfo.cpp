@@ -28,8 +28,9 @@
 #include <KPixmapSequenceOverlayPainter>
 #include <KLineEdit>
 #include <KDesktopFile>
+#include "kpasswdserver_interface.h"
 
-MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
+MountInfo::MountInfo(OrgKdeKPasswdServerInterface* iface, KConfigGroup config, QWidget* parent)
 : QWidget(parent)
 , m_share(false)
 , m_mount(false)
@@ -38,6 +39,7 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 , m_config(config)
 , m_painter1(new KPixmapSequenceOverlayPainter)
 , m_painter2(new KPixmapSequenceOverlayPainter)
+, m_interface(iface)
 {
     setupUi(this);
 
@@ -52,14 +54,16 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
     error->setPalette(palette);
 
     sambaRequester->setUrl(QUrl("smb:/"));
-
     connect(sambaRequester, SIGNAL(urlSelected(QUrl)), SLOT(checkValidSamba(QUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
+
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 
     connect(shareName, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
 
     connect(button, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
+
+    connect(m_interface, &OrgKdeKPasswdServerInterface::checkAuthInfoAsyncResult, this, &MountInfo::authInfoReceived);
 }
 
 MountInfo::~MountInfo()
@@ -92,8 +96,11 @@ void MountInfo::checkValidSamba(const QString& url)
 
 void MountInfo::checkValidSamba(const QUrl &url)
 {
-    qDebug() << url;
-    qDebug() << "Host: " << url.host();
+    KIO::AuthInfo info;
+    info.url = url;
+    m_interface->checkAuthInfoAsync(info, window()->winId(), 0);
+
+    qDebug() << "check valid url. Host: " << url.host() << url;
     m_process->close();
 
     m_share = false;
@@ -374,3 +381,11 @@ void MountInfo::autoFillMountName()
     shareName->setText(name);
 }
 
+void MountInfo::authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info)
+{
+    if (info.url == sambaRequester->url()) {
+//         qDebug() << "awesomeeeeeeeeeee" << requestId << info.username << info.password;
+        username->setText(info.username);
+        password->setText(info.password);
+    }
+}

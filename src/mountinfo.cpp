@@ -108,10 +108,10 @@ void MountInfo::checkValidSamba(const QUrl &url)
 
     m_fullSambaUrl = url.url();
     //If path and file are the same thing for example smb://foo/public
-    if (url.path().indexOf(url.fileName()) == 1) {
-        m_sambaDir = url.path();
+    if (url.toLocalFile().indexOf(url.fileName()) == 1) {
+        m_sambaDir = url.toLocalFile();
     } else {
-        m_sambaDir = url.path() + '/' + url.fileName();
+        m_sambaDir = url.toLocalFile() + '/' + url.fileName();
     }
 
     qDebug() << "fullSambaUrl" << m_fullSambaUrl << "sambaDir:" << m_sambaDir;
@@ -169,8 +169,8 @@ void MountInfo::nameResolveFinished(int status)
 
     m_painter1->stop();
 
-    QString output = m_process->readAllStandardOutput();
-    qDebug() << "name resolved:" << output;
+    QByteArray output = m_process->readAllStandardOutput();
+//     qDebug() << "name resolved:" << output;
 
     if (output.isEmpty()) {
         error->setText(i18n("Couldn't get the server IP"));
@@ -180,13 +180,14 @@ void MountInfo::nameResolveFinished(int status)
     }
 
     QString ipLine;
-    const QStringList lines = output.split("\n");
-    Q_FOREACH(const QString line, lines) {
+    const QList<QByteArray> lines = output.split('\n');
+    Q_FOREACH(const QString &line, lines) {
         if (line.contains(m_host)) {
             ipLine = line;
+            break;
         }
     }
-    QString ip = ipLine.left(ipLine.indexOf(" ")).trimmed();
+    QString ip = ipLine.left(ipLine.indexOf(' ')).trimmed();
 
     qDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {
@@ -214,27 +215,18 @@ void MountInfo::nameResolveFinished(int status)
 bool MountInfo::checkMountPoint(const QString& name)
 {
     m_mountName = name;
-    QUrl url(QDir::homePath());
-    url = url.adjusted(QUrl::StripTrailingSlash);
-    url.setPath(url.path() + '/' + "Network");
-    url = url.adjusted(QUrl::StripTrailingSlash);
-    url.setPath(url.path() + '/' + name);
-
-    return checkMountPoint(QUrl(url));
+    return checkMountPoint(QUrl::fromLocalFile(QDir::homePath() + "/Network/" + name));
 }
 
 bool MountInfo::checkMountPoint(const QUrl &url)
 {
     qDebug() << "ckecking mount point..." << url;
-    QString urlPath = url.path();
-    QDir dir(urlPath);
+    QDir dir(url.toLocalFile());
 
-    QUrl networkDir(QDir::homePath());
-    networkDir = networkDir.adjusted(QUrl::StripTrailingSlash);
-    networkDir.setPath(networkDir.path() + '/' + "Network");
-    dir.mkdir(networkDir.path());
+    const QString networkDir(QDir::homePath() + "/Network");
+    dir.mkdir(networkDir);
 
-    KDesktopFile cfg(networkDir.toLocalFile() + QString::fromLatin1(".directory"));
+    KDesktopFile cfg(networkDir + QString::fromLatin1("/.directory"));
     if (cfg.desktopGroup().readEntry("Icon", "").isEmpty()) {
         cfg.desktopGroup().writeEntry("Icon", "folder-remote");
         cfg.sync();
@@ -243,7 +235,7 @@ bool MountInfo::checkMountPoint(const QUrl &url)
     }
 
     m_mount = false;
-    m_mountPoint = url.path();
+    m_mountPoint = url.toLocalFile();
 
     if (dir.exists() && dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() != 0) {
         error->setText(i18n("Please, choose another name"));
@@ -253,9 +245,8 @@ bool MountInfo::checkMountPoint(const QUrl &url)
     }
 
     QList <Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-
-    Q_FOREACH(Solid::Device device, devices) {
-        if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
+    Q_FOREACH(const Solid::Device &device, devices) {
+        if (device.as<Solid::StorageAccess>()->filePath() == url.toLocalFile()) {
             error->setText(i18n("Please, choose another name"));
             setResult(working2, Fail);
             Q_EMIT checkDone();

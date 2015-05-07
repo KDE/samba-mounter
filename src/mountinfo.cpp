@@ -118,7 +118,6 @@ void MountInfo::checkValidSamba(const QUrl &url)
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
         error->setText(i18n("You must select a folder"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
@@ -175,7 +174,6 @@ void MountInfo::nameResolveFinished(int status)
     if (output.isEmpty()) {
         error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
@@ -193,7 +191,6 @@ void MountInfo::nameResolveFinished(int status)
     if (ip.isEmpty() || ip == "name_query") {
         error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
@@ -206,8 +203,6 @@ void MountInfo::nameResolveFinished(int status)
 
     m_share = true;
     setResult(working1, Ok);
-    Q_EMIT checkDone();
-    error->clear();
 
     autoFillMountName();
 }
@@ -249,22 +244,18 @@ bool MountInfo::checkMountPoint(const QUrl &url)
         if (device.as<Solid::StorageAccess>()->filePath() == url.toLocalFile()) {
             error->setText(i18n("Please, choose another name"));
             setResult(working2, Fail);
-            Q_EMIT checkDone();
             return false;
         }
     }
 
     m_mount = true;
     setResult(working2, Ok);
-    error->clear();
-    Q_EMIT checkDone();
 
     return true;
 }
 
 void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
 {
-
     switch(status)
     {
         case Empty:
@@ -272,9 +263,12 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
             break;
         case Ok:
             lbl->setPixmap(QIcon::fromTheme("dialog-ok-apply").pixmap(lbl->sizeHint()));
+            error->clear();
+            Q_EMIT checkDone();
             break;
         case Fail:
             lbl->setPixmap(QIcon::fromTheme("dialog-close").pixmap(lbl->sizeHint()));
+            Q_EMIT checkDone();
             break;
     }
 }

@@ -24,12 +24,15 @@
 
 #include <QDebug>
 #include <QAction>
-#include <QMessageBox>
+#include <QDBusMessage>
+#include <QDBusConnection>
+#include <QDBusArgument>
 #include <KAuthAction>
 #include <KAuthExecuteJob>
 #include <KPluginFactory>
 #include <KSharedConfig>
 #include <unistd.h>
+#include "kpasswdserver_interface.h"
 
 using namespace KAuth;
 
@@ -46,6 +49,8 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 
     m_ui->mountInfo->setLayout(m_layout);
     m_ui->mountList->setIconSize(QSize(48, 48));
+    m_ui->errorWidget->setMessageType(KMessageWidget::Error);
+    m_ui->errorWidget->hide();
 
     connect(m_ui->remoteBtn, SIGNAL(clicked(bool)), SLOT(rmBtnClicked()));
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addBtnClicked()));
@@ -224,11 +229,21 @@ bool SambaMount::umountSamba(const QString& name)
 
 bool SambaMount::executeJob(ExecuteJob* reply)
 {
+    if (!reply->action().isValid()) {
+        m_ui->errorWidget->setText(i18n("Couldn't find action '%1'", reply->action().name()));
+        m_ui->errorWidget->animatedShow();
+        qWarning() << "error while executing" << m_ui->errorWidget->text();
+        return false;
+    }
+
     bool ret = reply->exec();
     if (ret) {
         qDebug() << "executed" << reply->action().name() << reply->data()["output"];
+        m_ui->errorWidget->animatedHide();
     } else {
-        QMessageBox::warning(this, i18n("Error executing '%1'", reply->action().name()), i18n("Error %1: %2", reply->error(), reply->errorText()));
+        m_ui->errorWidget->setText(i18n("Error %1 on '%2':\n%3", reply->error(), reply->action().name(), reply->errorString()));
+        m_ui->errorWidget->animatedShow();
+        qWarning() << "error while executing" << m_ui->errorWidget->text();
     }
     return ret;
 }

@@ -238,7 +238,7 @@ bool SambaMount::executeJob(ExecuteJob* reply)
 
     bool ret = reply->exec();
     if (ret) {
-        qDebug() << "executed" << reply->action().name() << reply->data()["output"];
+        qDebug() << "executed" << reply->action().name() << reply->data();
         m_ui->errorWidget->animatedHide();
     } else {
         m_ui->errorWidget->setText(i18n("Error %1 on '%2':\n%3", reply->error(), reply->action().name(), reply->errorString()));

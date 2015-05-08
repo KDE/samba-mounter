@@ -239,7 +239,12 @@ bool SambaMount::executeJob(ExecuteJob* reply)
     bool ret = reply->exec();
     if (ret) {
         qDebug() << "executed" << reply->action().name() << reply->data();
-        m_ui->errorWidget->animatedHide();
+        if (reply->data()["exitCode"] != 0) {
+            m_ui->errorWidget->setText(i18n("Error triggering mount:\n%1", reply->data()["error"].toString()));
+            m_ui->errorWidget->setToolTip(m_ui->errorWidget->text());
+            m_ui->errorWidget->animatedShow();
+        } else
+            m_ui->errorWidget->animatedHide();
     } else {
         m_ui->errorWidget->setText(i18n("Error %1 on '%2':\n%3", reply->error(), reply->action().name(), reply->errorString()));
         m_ui->errorWidget->animatedShow();

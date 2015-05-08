@@ -62,5 +62,5 @@ int main(int argc, char** argv)
     qDebug() << proc.readAllStandardError();
     qDebug() << proc.readAllStandardOutput();
 
-    return 0;
+    return proc.exitCode();
 }

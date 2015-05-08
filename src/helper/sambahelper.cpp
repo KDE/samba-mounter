@@ -62,10 +62,10 @@ ActionReply SambaHelper::mount(QVariantMap args)
     proc.start("samba-realmounter", arguments);
     proc.waitForFinished();
 
-
     ActionReply reply;
     reply.addData("output", proc.readAllStandardOutput());
     reply.addData("error", proc.readAllStandardError());
+    reply.addData("exitCode", proc.exitCode());
 
     return reply;
 }

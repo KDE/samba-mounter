@@ -368,6 +368,9 @@ void MountInfo::autoFillMountName()
 
 void MountInfo::authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info)
 {
+    if (!username->text().isEmpty() || !password->text().isEmpty())
+        return;
+
     if (info.url == sambaRequester->url()) {
 //         qDebug() << "awesomeeeeeeeeeee" << requestId << info.username << info.password;
         username->setText(info.username);

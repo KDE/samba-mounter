@@ -212,6 +212,8 @@ bool SambaMount::mountSamba(KConfigGroup group)
     readAction.addArgument("path", qgetenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
+    readAction.addArgument("username", group.readEntry("username", "").toLocal8Bit().toBase64());
+    readAction.addArgument("password", group.readEntry("password", "").toLocal8Bit().toBase64());
     return executeJob(readAction.execute());
 }
 

@@ -27,11 +27,16 @@
 
 #include <QDebug>
 #include <unistd.h>
+
 using namespace KAuth;
 
-OnStart::OnStart(QObject* parent): QObject(parent)
+OnStart::OnStart(QObject* parent)
+    : QObject(parent)
+    , m_someFailed(false)
 {
     QMetaObject::invokeMethod(this, "mountConfiguredShares", Qt::QueuedConnection);
+
+    connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, [this](bool isOnline) { if (isOnline) { mountConfiguredShares(); } });
 }
 
 OnStart::~OnStart()
@@ -43,13 +48,17 @@ void OnStart::mountConfiguredShares()
 {
     KConfigGroup group = KSharedConfig::openConfig("samba-mounter")->group("mounts");
 
+    m_someFailed = false;
     QStringList nameList = group.groupList();
     Q_FOREACH(const QString &name, nameList) {
         mountSamba(group.group(name));
     }
 
-    qDebug() << "Exiting";
-    qApp->quit();
+    //if it failed, don't quit, it might be because there's no network connection
+    if (!m_someFailed) {
+        qDebug() << "Exiting";
+        qApp->quit();
+    }
 }
 
 void OnStart::mountSamba(KConfigGroup group)
@@ -67,8 +76,11 @@ void OnStart::mountSamba(KConfigGroup group)
     readAction.addArgument("password", group.readEntry("password", "none"));
 
     ExecuteJob* reply = readAction.execute();
-    reply->exec();
+    bool ret = reply->exec();
 
     qDebug() << reply->data()["output"];
     qDebug() << reply->data()["error"];
+    if (!ret) {
+        m_someFailed = true;
+    }
 }

@@ -18,11 +18,12 @@
 
 #include <QProcess>
 #include <QDebug>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
     if (argc < 7) {
-        qDebug() << "Not enough arguments";
+        std::cerr << "Not enough arguments" << std::endl;
         return 1;
     }
 
@@ -59,8 +60,8 @@ int main(int argc, char** argv)
     proc.start("mount", arguments);
     proc.waitForFinished();
 
-    qDebug() << proc.readAllStandardError();
-    qDebug() << proc.readAllStandardOutput();
+    std::cerr << proc.readAllStandardError().toStdString() << std::endl;
+    std::cerr << proc.readAllStandardOutput().toStdString() << std::endl;
 
     return proc.exitCode();
 }

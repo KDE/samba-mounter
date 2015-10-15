@@ -53,7 +53,7 @@ MountInfo::MountInfo(OrgKdeKPasswdServerInterface* iface, KConfigGroup config, Q
 
     error->setPalette(palette);
 
-    sambaRequester->setUrl(QUrl("smb:/"));
+    sambaRequester->setUrl(QUrl("smb://"));
     connect(sambaRequester, SIGNAL(urlSelected(QUrl)), SLOT(checkValidSamba(QUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
 

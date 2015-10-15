@@ -108,10 +108,10 @@ void MountInfo::checkValidSamba(const QUrl &url)
 
     m_fullSambaUrl = url.url();
     //If path and file are the same thing for example smb://foo/public
-    if (url.toLocalFile().indexOf(url.fileName()) == 1) {
-        m_sambaDir = url.toLocalFile();
+    if (url.path().indexOf(url.fileName()) == 1) {
+        m_sambaDir = url.path();
     } else {
-        m_sambaDir = url.toLocalFile() + '/' + url.fileName();
+        m_sambaDir = url.path() + '/' + url.fileName();
     }
 
     qDebug() << "fullSambaUrl" << m_fullSambaUrl << "sambaDir:" << m_sambaDir;
@@ -276,7 +276,7 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
 void MountInfo::buttonClicked()
 {
     checkMountPoint(shareName->text());
-    checkValidSamba(sambaRequester->lineEdit()->text());
+    checkValidSamba(sambaRequester->url());
 
     connect(this, SIGNAL(checkDone()), SLOT(mountIsValid()));
 }

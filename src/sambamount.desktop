@@ -1,15 +1,14 @@
 [Desktop Entry]
-Exec=kcmshell4 sambamount
+Exec=kcmshell5 sambamount
 Icon=preferences-system-network-sharing
 Type=Service
 
 X-KDE-ServiceTypes=KCModule
 
-X-KDE-Library=sambamount
+X-KDE-Library=kcm_sambamount
 X-KDE-ParentApp=kcontrol
 
-X-KDE-System-Settings-Parent-Category=network-and-connectivity
-X-KDE-System-Settings-Parent-Category=sharing
+X-KDE-System-Settings-Parent-Category=network
 
 Name=Network Drivers
 

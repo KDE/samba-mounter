@@ -18,21 +18,14 @@
 
 #include "onstart.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
-#include <KGlobal>
 #include <KConfigGroup>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
-#include <kcomponentdata.h>
-#include <kglobal.h>
 #include <ksharedconfig.h>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    KComponentData data("bluedevil", "bluedevilauthorizehelper");
-    KGlobal::setActiveComponent(data);
 
     KConfigGroup group = KSharedConfig::openConfig("samba-mounter")->group("mounts");
     if (group.groupList().isEmpty()) {

@@ -18,19 +18,25 @@
 
 #include "onstart.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
-#include <kauthaction.h>
+#include <KAuthAction>
+#include <KAuthExecuteJob>
 #include <kconfiggroup.h>
 #include <ksharedconfig.h>
 
 #include <QDebug>
 #include <unistd.h>
+
 using namespace KAuth;
 
-OnStart::OnStart(QObject* parent): QObject(parent)
+OnStart::OnStart(QObject* parent)
+    : QObject(parent)
+    , m_someFailed(false)
 {
     QMetaObject::invokeMethod(this, "mountConfiguredShares", Qt::QueuedConnection);
+
+    connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, [this](bool isOnline) { if (isOnline) { mountConfiguredShares(); } });
 }
 
 OnStart::~OnStart()
@@ -42,30 +48,39 @@ void OnStart::mountConfiguredShares()
 {
     KConfigGroup group = KSharedConfig::openConfig("samba-mounter")->group("mounts");
 
+    m_someFailed = false;
     QStringList nameList = group.groupList();
     Q_FOREACH(const QString &name, nameList) {
         mountSamba(group.group(name));
     }
 
-    qDebug() << "Exiting";
-    qApp->quit();
+    //if it failed, don't quit, it might be because there's no network connection
+    if (!m_someFailed) {
+        qDebug() << "Exiting";
+        qApp->quit();
+    }
 }
 
 void OnStart::mountSamba(KConfigGroup group)
 {
     Action readAction("org.kde.sambamounter.mount");
-    readAction.setHelperID("org.kde.sambamounter");
+    readAction.setHelperId("org.kde.sambamounter");
 
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
     readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
     readAction.addArgument("username", group.readEntry("username", "none"));
     readAction.addArgument("password", group.readEntry("password", "none"));
 
-    ActionReply reply = readAction.execute();
+    ExecuteJob* reply = readAction.execute();
+    bool ret = reply->exec();
 
-    qDebug() << reply.data()["output"];
-    qDebug() << reply.data()["error"];
+    qDebug() << reply->data()["output"];
+    qDebug() << reply->data()["error"];
+    if (!ret) {
+        m_someFailed = true;
+    }
 }

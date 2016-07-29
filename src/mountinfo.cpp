@@ -19,17 +19,18 @@
 #include "mountinfo.h"
 
 #include <QtCore/QProcess>
-#include <QtGui/QDesktopServices>
+#include <QDir>
 
-#include <KDebug>
+#include <QDebug>
 #include <KColorScheme>
 #include <solid/device.h>
 #include <solid/storageaccess.h>
 #include <KPixmapSequenceOverlayPainter>
 #include <KLineEdit>
 #include <KDesktopFile>
+#include "kpasswdserver_interface.h"
 
-MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
+MountInfo::MountInfo(OrgKdeKPasswdServerInterface* iface, KConfigGroup config, QWidget* parent)
 : QWidget(parent)
 , m_share(false)
 , m_mount(false)
@@ -38,6 +39,7 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
 , m_config(config)
 , m_painter1(new KPixmapSequenceOverlayPainter)
 , m_painter2(new KPixmapSequenceOverlayPainter)
+, m_interface(iface)
 {
     setupUi(this);
 
@@ -45,22 +47,23 @@ MountInfo::MountInfo(KConfigGroup config, QWidget* parent)
     m_painter2->setWidget(working2);
 
     KColorScheme scheme(QPalette::Normal);
-    KColorScheme::ForegroundRole role;
 
     QPalette palette(error->palette());
     palette.setColor(QPalette::Foreground, scheme.foreground(KColorScheme::NegativeText).color());
 
     error->setPalette(palette);
 
-    sambaRequester->setUrl(KUrl("smb://"));
-
-    connect(sambaRequester, SIGNAL(urlSelected(KUrl)), SLOT(checkValidSamba(KUrl)));
+    sambaRequester->setUrl(QUrl("smb://"));
+    connect(sambaRequester, SIGNAL(urlSelected(QUrl)), SLOT(checkValidSamba(QUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
+
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 
     connect(shareName, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
 
     connect(button, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
+
+    connect(m_interface, &OrgKdeKPasswdServerInterface::checkAuthInfoAsyncResult, this, &MountInfo::authInfoReceived);
 }
 
 MountInfo::~MountInfo()
@@ -88,42 +91,46 @@ void MountInfo::setConfigGroup(const QString& name)
 
 void MountInfo::checkValidSamba(const QString& url)
 {
-    kDebug() << url;
-    checkValidSamba(KUrl(url));
+    checkValidSamba(QUrl(url));
 }
 
-void MountInfo::checkValidSamba(const KUrl& url)
+void MountInfo::checkValidSamba(const QUrl &url)
 {
-    kDebug() << url;
-    kDebug() << "Host: " << url.host();
-    kDebug() << "Dir: " << url.directory(KUrl::AppendTrailingSlash) + url.fileName();
+    KIO::AuthInfo info;
+    info.url = url;
+    m_interface->checkAuthInfoAsync(info, window()->winId(), 0);
+
+    qDebug() << "check valid url. Host: " << url.host() << url;
     m_process->close();
 
     m_share = false;
     setResult(working1, Empty);
 
     m_fullSambaUrl = url.url();
-    m_sambaDir = url.directory(KUrl::AppendTrailingSlash) + url.fileName();
+    //If path and file are the same thing for example smb://foo/public
+    if (url.path().indexOf(url.fileName()) == 1) {
+        m_sambaDir = url.path();
+    } else {
+        m_sambaDir = url.path() + '/' + url.fileName();
+    }
 
+    qDebug() << "fullSambaUrl" << m_fullSambaUrl << "sambaDir:" << m_sambaDir;
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {
         error->setText(i18n("You must select a folder"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
     m_host = url.host();
-    if (isIp(m_host)) {
+    if (isIp(m_host))
         checkValidIp(m_host);
-        return;
-    }
-
-    checkValidHost(m_host);
+    else
+        checkValidHost(m_host);
 }
 
 bool MountInfo::isIp(const QString& host)
 {
-    QStringList split = host.split(".");
+    QStringList split = host.split('.');
     if (split.count() != 4) {
         return false;
     }
@@ -145,7 +152,7 @@ void MountInfo::checkValidIp(const QString& host)
     args.append("-T");
     args.append("-A");
     args.append(host);
-    qDebug() << args;
+    qDebug() << "valid IP" << args;
     m_process->start("nmblookup", args);
 }
 
@@ -157,34 +164,33 @@ void MountInfo::checkValidHost(const QString& host)
 
 void MountInfo::nameResolveFinished(int status)
 {
-    kDebug() << "Status: " << status;
+    qDebug() << "Status: " << status;
 
     m_painter1->stop();
 
-    QString output = m_process->readAllStandardOutput();
-    kDebug() << output;
+    QByteArray output = m_process->readAllStandardOutput();
+//     qDebug() << "name resolved:" << output;
 
     if (output.isEmpty()) {
         error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
     QString ipLine;
-    const QStringList lines = output.split("\n");
-    Q_FOREACH(const QString line, lines) {
+    const QList<QByteArray> lines = output.split('\n');
+    Q_FOREACH(const QString &line, lines) {
         if (line.contains(m_host)) {
             ipLine = line;
+            break;
         }
     }
-    QString ip = ipLine.left(ipLine.indexOf(" ")).trimmed();
+    QString ip = ipLine.left(ipLine.indexOf(' ')).trimmed();
 
-    kDebug() << "Ip: " << ip;
+    qDebug() << "Ip: " << ip;
     if (ip.isEmpty() || ip == "name_query") {
         error->setText(i18n("Couldn't get the server IP"));
         setResult(working1, Fail);
-        Q_EMIT checkDone();
         return;
     }
 
@@ -197,8 +203,6 @@ void MountInfo::nameResolveFinished(int status)
 
     m_share = true;
     setResult(working1, Ok);
-    Q_EMIT checkDone();
-    error->setText("");
 
     autoFillMountName();
 }
@@ -206,24 +210,18 @@ void MountInfo::nameResolveFinished(int status)
 bool MountInfo::checkMountPoint(const QString& name)
 {
     m_mountName = name;
-    KUrl url(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    url.addPath("Network");
-    url.addPath(name);
-
-    return checkMountPoint(KUrl(url));
+    return checkMountPoint(QUrl::fromLocalFile(QDir::homePath() + "/Network/" + name));
 }
 
-bool MountInfo::checkMountPoint(const KUrl& url)
+bool MountInfo::checkMountPoint(const QUrl &url)
 {
-    kDebug() << url;
-    QString urlPath = url.path();
-    QDir dir(urlPath);
+    qDebug() << "ckecking mount point..." << url;
+    QDir dir(url.toLocalFile());
 
-    KUrl networkDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    networkDir.addPath("Network");
-    dir.mkdir(networkDir.path());
+    const QString networkDir(QDir::homePath() + "/Network");
+    dir.mkdir(networkDir);
 
-    KDesktopFile cfg(networkDir.toLocalFile(KUrl::AddTrailingSlash) + QString::fromLatin1(".directory"));
+    KDesktopFile cfg(networkDir + QString::fromLatin1("/.directory"));
     if (cfg.desktopGroup().readEntry("Icon", "").isEmpty()) {
         cfg.desktopGroup().writeEntry("Icon", "folder-remote");
         cfg.sync();
@@ -232,7 +230,7 @@ bool MountInfo::checkMountPoint(const KUrl& url)
     }
 
     m_mount = false;
-    m_mountPoint = url.path();
+    m_mountPoint = url.toLocalFile();
 
     if (dir.exists() && dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() != 0) {
         error->setText(i18n("Please, choose another name"));
@@ -242,27 +240,22 @@ bool MountInfo::checkMountPoint(const KUrl& url)
     }
 
     QList <Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
-
-    Q_FOREACH(Solid::Device device, devices) {
-        if (device.as<Solid::StorageAccess>()->filePath() == urlPath) {
+    Q_FOREACH(const Solid::Device &device, devices) {
+        if (device.as<Solid::StorageAccess>()->filePath() == url.toLocalFile()) {
             error->setText(i18n("Please, choose another name"));
             setResult(working2, Fail);
-            Q_EMIT checkDone();
             return false;
         }
     }
 
     m_mount = true;
     setResult(working2, Ok);
-    error->setText("");
-    Q_EMIT checkDone();
 
     return true;
 }
 
 void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
 {
-
     switch(status)
     {
         case Empty:
@@ -270,9 +263,12 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
             break;
         case Ok:
             lbl->setPixmap(QIcon::fromTheme("dialog-ok-apply").pixmap(lbl->sizeHint()));
+            error->clear();
+            Q_EMIT checkDone();
             break;
         case Fail:
             lbl->setPixmap(QIcon::fromTheme("dialog-close").pixmap(lbl->sizeHint()));
+            Q_EMIT checkDone();
             break;
     }
 }
@@ -280,13 +276,14 @@ void MountInfo::setResult(QLabel* lbl, MountInfo::Status status)
 void MountInfo::buttonClicked()
 {
     checkMountPoint(shareName->text());
-    checkValidSamba(sambaRequester->lineEdit()->text());
+    checkValidSamba(sambaRequester->url());
 
     connect(this, SIGNAL(checkDone()), SLOT(mountIsValid()));
 }
 
 void MountInfo::mountIsValid()
 {
+    qDebug() << "Mount is valid";
     disconnect(this, SIGNAL(checkDone()), this, SLOT(mountIsValid()));
 
     if (!m_mount || !m_share) {
@@ -303,6 +300,7 @@ void MountInfo::mountIsValid()
 
     saveConfig(group);
 
+    qDebug() << "Edit mode:" << m_editMode;
     if (m_editMode) {
         Q_EMIT mountEditted(group);
         return;
@@ -327,7 +325,7 @@ void MountInfo::saveConfig()
 
 void MountInfo::saveConfig(KConfigGroup group)
 {
-    kDebug() << "Saving mount";
+    qDebug() << "Saving mount";
 
     group.writeEntry("ip", m_ip);
     group.writeEntry("hostname", m_host);
@@ -357,13 +355,25 @@ void MountInfo::autoFillMountName()
         return;
     }
 
-    QString name = KUrl(sambaRequester->lineEdit()->text()).fileName();
+    QString name = sambaRequester->url().fileName();
 
     if (!checkMountPoint(name)) {
         setResult(working2, Empty);
-        error->setText("");
+        error->clear();
         return;
     }
 
     shareName->setText(name);
+}
+
+void MountInfo::authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info)
+{
+    if (!username->text().isEmpty() || !password->text().isEmpty())
+        return;
+
+    if (info.url == sambaRequester->url()) {
+//         qDebug() << "awesomeeeeeeeeeee" << requestId << info.username << info.password;
+        username->setText(info.username);
+        password->setText(info.password);
+    }
 }

@@ -22,12 +22,17 @@
 
 #include <QStackedLayout>
 
-#include <KDebug>
-#include <KAction>
-#include <KAuth/Action>
-#include <KAuth/ActionWatcher>
-#include <kpluginfactory.h>
+#include <QDebug>
+#include <QAction>
+#include <QDBusMessage>
+#include <QDBusConnection>
+#include <QDBusArgument>
+#include <KAuthAction>
+#include <KAuthExecuteJob>
+#include <KPluginFactory>
+#include <KSharedConfig>
 #include <unistd.h>
+#include "kpasswdserver_interface.h"
 
 using namespace KAuth;
 
@@ -35,7 +40,7 @@ K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
 K_EXPORT_PLUGIN(SambaMountFactory("sambamount", "sambamount"))
 
 SambaMount::SambaMount(QWidget *parent, const QVariantList&)
-: KCModule(SambaMountFactory::componentData(), parent)
+: KCModule(parent)
 , m_layout(new QStackedLayout)
 {
     setButtons(KCModule::Help);
@@ -44,6 +49,8 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 
     m_ui->mountInfo->setLayout(m_layout);
     m_ui->mountList->setIconSize(QSize(48, 48));
+    m_ui->errorWidget->setMessageType(KMessageWidget::Error);
+    m_ui->errorWidget->hide();
 
     connect(m_ui->remoteBtn, SIGNAL(clicked(bool)), SLOT(rmBtnClicked()));
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addBtnClicked()));
@@ -51,6 +58,8 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
             this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
 
     QMetaObject::invokeMethod(this, "initSambaMounts", Qt::QueuedConnection);
+
+    m_interface = new OrgKdeKPasswdServerInterface("org.kde.kpasswdserver", "/modules/kpasswdserver", QDBusConnection::sessionBus(), this);
 }
 
 SambaMount::~SambaMount()
@@ -71,14 +80,11 @@ SambaMount::~SambaMount()
 void SambaMount::initSambaMounts()
 {
     KConfigGroup configMounts = mounts();
-    if (!configMounts.groupList().isEmpty()) {
-        QStringList ids = configMounts.groupList();
-        Q_FOREACH(const QString &id, ids) {
-            addMount(configMounts.group(id));
-        }
+    Q_FOREACH(const QString &id, configMounts.groupList()) {
+        addMount(configMounts.group(id));
     }
 
-    MountInfo *widget = new MountInfo(mounts(), this);
+    MountInfo *widget = new MountInfo(m_interface, mounts(), this);
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -112,17 +118,17 @@ void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* p
 
 void SambaMount::mountCreated(KConfigGroup group)
 {
-    kDebug() << "New Mount Created";
+    qDebug() << "New Mount Created";
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));
-    item->setText(KUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
+    item->setText(QUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(qobject_cast<QWidget *>(sender())));
     item->setData(Qt::UserRole + 2, group.name());
 
     m_ui->mountList->addItem(item);
 
-    MountInfo *widget = new MountInfo(mounts(), this);
+    MountInfo *widget = new MountInfo(m_interface, mounts(), this);
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -137,6 +143,13 @@ void SambaMount::mountCreated(KConfigGroup group)
     m_ui->mountList->setCurrentItem(item);
 
     mountSamba(group);
+}
+
+void SambaMount::mountEditted(KConfigGroup group)
+{
+    qDebug() << "Mount editted" << group.name();
+    if (umountSamba(group.name()))
+        mountSamba(group);
 }
 
 void SambaMount::addBtnClicked()
@@ -172,13 +185,14 @@ KConfigGroup SambaMount::mounts()
 
 void SambaMount::addMount(KConfigGroup group)
 {
-    MountInfo *info = new MountInfo(mounts(), this);
+    MountInfo *info = new MountInfo(m_interface, mounts(), this);
+    connect(info, SIGNAL(mountEditted(KConfigGroup)), SLOT(mountEditted(KConfigGroup)));
     info->setConfigGroup(group.name());
     m_layout->addWidget(info);
 
     QListWidgetItem *item = new QListWidgetItem();
     item->setIcon(QIcon::fromTheme("network-server"));
-    item->setText(KUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
+    item->setText(QUrl(group.readEntry("fullSambaUrl", "")).fileName() + " on " + group.readEntry("hostname", ""));
     item->setData(Qt::UserRole, group.readEntry("ip", ""));
     item->setData(Qt::UserRole + 1, QVariant::fromValue<QWidget *>(info));
     item->setData(Qt::UserRole + 2, group.name());
@@ -186,31 +200,59 @@ void SambaMount::addMount(KConfigGroup group)
     m_ui->mountList->addItem(item);
 }
 
-void SambaMount::mountSamba(KConfigGroup group)
+bool SambaMount::mountSamba(KConfigGroup group)
 {
-     Action readAction("org.kde.sambamounter.mount");
-    readAction.setHelperID("org.kde.sambamounter");
+    qDebug() << "Mounting samba: " << group.name();
+    Action readAction("org.kde.sambamounter.mount");
+    readAction.setHelperId("org.kde.sambamounter");
 
     readAction.addArgument("uid", QString::number(getuid()));
     readAction.addArgument("ip", group.readEntry("ip", ""));
-    readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("locale", qgetenv("LANG"));
+    readAction.addArgument("path", qgetenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ActionReply reply = readAction.execute();
-
-    kDebug() << reply.data()["output"];
+    readAction.addArgument("username", group.readEntry("username", "").toLocal8Bit().toBase64());
+    readAction.addArgument("password", group.readEntry("password", "").toLocal8Bit().toBase64());
+    return executeJob(readAction.execute());
 }
 
-void SambaMount::umountSamba(const QString& name)
+bool SambaMount::umountSamba(const QString& name)
 {
     KConfigGroup group = mounts().group(name);
     Action readAction("org.kde.sambamounter.umount");
-    readAction.setHelperID("org.kde.sambamounter");
+    readAction.setHelperId("org.kde.sambamounter");
 
-    readAction.addArgument("locale", getenv("LANG"));
+    readAction.addArgument("locale", qgetenv("LANG"));
+    readAction.addArgument("path", qgetenv("PATH"));
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    ActionReply reply = readAction.execute();
+    return executeJob(readAction.execute());
+}
 
+bool SambaMount::executeJob(ExecuteJob* reply)
+{
+    if (!reply->action().isValid()) {
+        m_ui->errorWidget->setText(i18n("Couldn't find action '%1'", reply->action().name()));
+        m_ui->errorWidget->animatedShow();
+        qWarning() << "error while executing" << m_ui->errorWidget->text();
+        return false;
+    }
+
+    bool ret = reply->exec();
+    if (ret) {
+        qDebug() << "executed" << reply->action().name() << reply->data();
+        if (reply->data()["exitCode"] != 0) {
+            m_ui->errorWidget->setText(i18n("Error triggering mount:\n%1", reply->data()["error"].toString()));
+            m_ui->errorWidget->setToolTip(m_ui->errorWidget->text());
+            m_ui->errorWidget->animatedShow();
+        } else
+            m_ui->errorWidget->animatedHide();
+    } else {
+        m_ui->errorWidget->setText(i18n("Error %1 on '%2':\n%3", reply->error(), reply->action().name(), reply->errorString()));
+        m_ui->errorWidget->animatedShow();
+        qWarning() << "error while executing" << m_ui->errorWidget->text();
+    }
+    return ret;
 }
 
 #include "sambamount.moc"

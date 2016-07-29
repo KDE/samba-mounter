@@ -35,11 +35,20 @@ ActionReply SambaHelper::mount(QVariantMap args)
     QString sambaDir = args["sambaDir"].toByteArray();
     QString mountPoint = args["mountPoint"].toByteArray();
     QString locale = args["locale"].toString();
+    QString path = args["path"].toString();
     QString username = args["username"].toString();
     QString password = args["password"].toString();
 
-    setenv("LANG", locale.toAscii(), 1);
-    setlocale(LC_CTYPE, locale.toAscii());
+    if (username.isEmpty()) {
+        username = "none";
+    }
+    if (password.isEmpty()) {
+        password = "none";
+    }
+
+    setenv("LANG", locale.toLocal8Bit(), 1);
+    setenv("PATH", path.toLocal8Bit(), 1);
+    setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;
     arguments.append(ip);
@@ -53,10 +62,10 @@ ActionReply SambaHelper::mount(QVariantMap args)
     proc.start("samba-realmounter", arguments);
     proc.waitForFinished();
 
-
     ActionReply reply;
     reply.addData("output", proc.readAllStandardOutput());
     reply.addData("error", proc.readAllStandardError());
+    reply.addData("exitCode", proc.exitCode());
 
     return reply;
 }
@@ -64,8 +73,10 @@ ActionReply SambaHelper::mount(QVariantMap args)
 ActionReply SambaHelper::umount(QVariantMap args)
 {
     QString locale = args["locale"].toString();
-    setenv("LANG", locale.toAscii(), 1);
-    setlocale(LC_CTYPE, locale.toAscii());
+    QString path = args["path"].toString();
+    setenv("LANG", locale.toLocal8Bit(), 1);
+    setenv("PATH", path.toLocal8Bit(), 1);
+    setlocale(LC_CTYPE, locale.toLocal8Bit());
 
     QStringList arguments;
     arguments.append(args["mountPoint"].toByteArray());
@@ -74,8 +85,8 @@ ActionReply SambaHelper::umount(QVariantMap args)
     proc.start("samba-realumounter", arguments);
     proc.waitForFinished();
 
-    return ActionReply::SuccessReply;
+    return ActionReply::SuccessReply();
 }
 
-KDE4_AUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)
+KAUTH_HELPER_MAIN("org.kde.sambamounter", SambaHelper)
 // int main(int argc, char **argv) { setlocale(LC_CTYPE, "en_US.UTF-8"); return KAuth::HelperSupport::helperMain(argc, argv, "org.kde.sambamounter", new SambaHelper ()); }

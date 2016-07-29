@@ -20,8 +20,12 @@
 #define ONSTART_H
 
 #include <QtCore/QObject>
+#include <QNetworkConfigurationManager>
 
-#include <kconfiggroup.h>
+#include <KConfigGroup>
+#include <QEventLoopLocker>
+
+class KJob;
 
 class OnStart : public QObject
 {
@@ -34,7 +38,13 @@ class OnStart : public QObject
         void mountConfiguredShares();
 
     private:
+        bool m_someFailed;
         void mountSamba(KConfigGroup group);
+
+        QNetworkConfigurationManager m_networkConfigurationManager;
+
+        //lock the event loop as this class is instantiated
+        QEventLoopLocker m_lock;
 };
 
 #endif //ONSTART_H

@@ -21,10 +21,13 @@
 
 #include "ui_mount.h"
 
-#include <QtGui/QWidget>
+#include <QWidget>
+#include <KIO/AuthInfo>
+#include <KConfigGroup>
 
 class QProcess;
 class KPixmapSequenceOverlayPainter;
+class OrgKdeKPasswdServerInterface;
 class MountInfo : public QWidget, Ui::MountInfo
 {
     Q_OBJECT
@@ -34,18 +37,18 @@ class MountInfo : public QWidget, Ui::MountInfo
             Ok      = 2,
             Fail    = 4
         };
-        explicit MountInfo(KConfigGroup config, QWidget* parent = 0);
+        explicit MountInfo(OrgKdeKPasswdServerInterface* interface, KConfigGroup config, QWidget* parent = 0);
         virtual ~MountInfo();
 
         QString id() const;
         void setConfigGroup(const QString &name);
 
     public Q_SLOTS:
-        void checkValidSamba(const KUrl &url);
+        void checkValidSamba(const QUrl &url);
         void checkValidSamba(const QString &url);
         void nameResolveFinished(int status);
 
-        bool checkMountPoint(const KUrl &url);
+        bool checkMountPoint(const QUrl &url);
         bool checkMountPoint(const QString& name);
 
         void setResult(QLabel *lbl, Status status);
@@ -68,11 +71,13 @@ class MountInfo : public QWidget, Ui::MountInfo
         void checkValidHost(const QString &url);
 
     private:
+        void authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info);
         bool m_share, m_mount, m_editMode;
         QProcess *m_process;
         KConfigGroup m_config;
         KPixmapSequenceOverlayPainter *m_painter1;
         KPixmapSequenceOverlayPainter *m_painter2;
+        OrgKdeKPasswdServerInterface* m_interface;
 
         QString m_id;
         QString m_host;

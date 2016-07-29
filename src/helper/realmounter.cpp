@@ -18,9 +18,15 @@
 
 #include <QProcess>
 #include <QDebug>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
+    if (argc < 7) {
+        std::cerr << "Not enough arguments" << std::endl;
+        return 1;
+    }
+
     QString sambaDir = QString::fromUtf8(QByteArray::fromBase64(argv[2]));
     QString mountPoint = QString::fromUtf8(QByteArray::fromBase64(argv[3]));
     QString share = QString::fromUtf8("//");
@@ -54,8 +60,8 @@ int main(int argc, char** argv)
     proc.start("mount", arguments);
     proc.waitForFinished();
 
-    qDebug() << proc.readAllStandardError();
-    qDebug() << proc.readAllStandardOutput();
+    std::cerr << proc.readAllStandardError().toStdString() << std::endl;
+    std::cerr << proc.readAllStandardOutput().toStdString() << std::endl;
 
-    return 0;
+    return proc.exitCode();
 }

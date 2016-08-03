@@ -12,7 +12,7 @@ X-KDE-System-Settings-Parent-Category=network
 
 Name=Network Drivers
 
-Comment=Configure mounts managed by KDE instead of fstab
+Comment=Configure mounts managed by Plasma instead of fstab
 
 X-KDE-Keywords=Samba,Mount,Fstab
 

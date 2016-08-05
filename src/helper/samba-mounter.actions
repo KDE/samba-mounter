@@ -1,11 +1,19 @@
 [org.kde.sambamounter.mount]
 Name=Mount a cifs file system
+Name[pt]=Montar um sistema de ficheiros CIFS
+Name[sv]=Montera ett CIFS-filsystem
+Name[uk]=Змонтувати файлову систему CIFS
+Name[x-test]=xxMount a cifs file systemxx
 Description=Executes mount with the needed arguments to mount samba shares
 Policy=yes
 Persistence=always
 
 [org.kde.sambamounter.umount]
 Name=Umount a cifs file system
+Name[pt]=Desmontar um sistema de ficheiros CIFS
+Name[sv]=Avmontera ett CIFS-filsystem
+Name[uk]=Демонтувати файлову систему CIFS
+Name[x-test]=xxUmount a cifs file systemxx
 Description=Executes umount with the needed arguments to umount a samba share
 Policy=yes
 Persistence=always

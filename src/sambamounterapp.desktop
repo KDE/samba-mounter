@@ -2,7 +2,15 @@
 Type=Application
 Version=0.1
 Name=Network Drives
+Name[pt]=Unidades de Rede
+Name[sv]=Nätverksdrivrutiner
+Name[uk]=Диски у мережі
+Name[x-test]=xxNetwork Drivesxx
 GenericName=Network Drives
+GenericName[pt]=Unidades de Rede
+GenericName[sv]=Nätverksdrivrutiner
+GenericName[uk]=Диски у мережі
+GenericName[x-test]=xxNetwork Drivesxx
 Exec=kcmshell5 sambamount
 Comment=Network Samba Drives
 Icon=preferences-system-network-sharing

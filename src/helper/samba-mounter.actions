@@ -1,19 +1,41 @@
 [org.kde.sambamounter.mount]
 Name=Mount a cifs file system
+Name[ca]=Munta un sistema de fitxers CIFS
+Name[nl]=Een cifs-bestandssysteem aankoppelen
+Name[pl]=Podepnij system plików cifs
 Name[pt]=Montar um sistema de ficheiros CIFS
+Name[sk]=Pripojiť súborový systém CIFS
 Name[sv]=Montera ett CIFS-filsystem
 Name[uk]=Змонтувати файлову систему CIFS
 Name[x-test]=xxMount a cifs file systemxx
 Description=Executes mount with the needed arguments to mount samba shares
+Description[ca]=Executa el muntatge amb els arguments necessaris per a tenir muntades comparticions de Samba
+Description[pl]=Podpina z wymaganymi parametrami dla udziałów samby
+Description[pt]=Executa o 'mount' com os argumentos necessários para a montagem de partilhas de Samba
+Description[sk]=Spustí pripojenie s potrebnými argumentami na pripojenie zdieľania Samby
+Description[sv]=Utför montering med de nödvändiga väljarna för att montera delade Samba-resurser
+Description[uk]=Виконує монтування із потрібними аргументами для спільних ресурсів samba
+Description[x-test]=xxExecutes mount with the needed arguments to mount samba sharesxx
 Policy=yes
 Persistence=always
 
 [org.kde.sambamounter.umount]
 Name=Umount a cifs file system
+Name[ca]=Desmunta un sistema de fitxers CIFS
+Name[nl]=Een cifs-bestandssysteem afkoppelen
+Name[pl]=Odepnij system plików cifs
 Name[pt]=Desmontar um sistema de ficheiros CIFS
+Name[sk]=Odpojiť súborový systém CIFS
 Name[sv]=Avmontera ett CIFS-filsystem
 Name[uk]=Демонтувати файлову систему CIFS
 Name[x-test]=xxUmount a cifs file systemxx
 Description=Executes umount with the needed arguments to umount a samba share
+Description[ca]=Executa el desmuntatge amb els arguments necessaris per a tenir desmuntada una compartició de Samba
+Description[pl]=Odpina z wymaganymi parametrami dla udziałów samby
+Description[pt]=Executa o 'umount' com os argumentos necessários para a desmontagem de partilhas de Samba
+Description[sk]=Spustí odpojenie s potrebnými argumentami na odpojenie zdieľania Samby
+Description[sv]=Utför avmontering med de nödvändiga väljarna för att avmontera en delad Samba-resurs
+Description[uk]=Виконує демонтування із потрібними аргументами для спільного ресурсу samba
+Description[x-test]=xxExecutes umount with the needed arguments to umount a samba sharexx
 Policy=yes
 Persistence=always

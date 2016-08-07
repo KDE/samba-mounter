@@ -22,6 +22,7 @@ GenericName[x-test]=xxNetwork Drivesxx
 Exec=kcmshell5 sambamount
 Comment=Network Samba Drives
 Comment[ca]=Unitats Samba de xarxa
+Comment[nl]=Netwerkschijven voor samba
 Comment[pl]=Napędy sieciowe Samby
 Comment[pt]=Unidades de Rede Samba
 Comment[sk]=Sieťové Samba disky

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Samba Mounter
 Name[ca]=Muntador per a Samba
+Name[ca@valencia]=Muntador per a Samba
 Name[nl]=Aankoppelprogramma voor samba
 Name[pl]=Podpinanie Samby
 Name[pt]=Montagem de Samba
@@ -10,6 +11,7 @@ Name[uk]=Засіб монтування Samba
 Name[x-test]=xxSamba Mounterxx
 GenericName=Mounts Samba shares
 GenericName[ca]=Comparticions de Samba muntades
+GenericName[ca@valencia]=Comparticions de Samba muntades
 GenericName[nl]=Koppelt samba shares aan
 GenericName[pl]=Podpina zasoby Samby
 GenericName[pt]=Monta partilhas de Samba
@@ -29,6 +31,7 @@ NoDisplay=true
 Categories=Qt;KDE;Utility;X-KDE-Utilities-Desktop;
 Comment=Mounts Samba shares at startup time
 Comment[ca]=Comparticions de Samba muntades en temps d'inici
+Comment[ca@valencia]=Comparticions de Samba muntades en temps d'inici
 Comment[nl]=Koppelt samba shares aan bij opstarten
 Comment[pl]=Podpina zasoby Samby przy uruchamianiu
 Comment[pt]=Monta partilhas de Samba na altura do arranque

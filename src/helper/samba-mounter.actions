@@ -1,6 +1,7 @@
 [org.kde.sambamounter.mount]
 Name=Mount a cifs file system
 Name[ca]=Munta un sistema de fitxers CIFS
+Name[ca@valencia]=Munta un sistema de fitxers CIFS
 Name[nl]=Een cifs-bestandssysteem aankoppelen
 Name[pl]=Podepnij system plików cifs
 Name[pt]=Montar um sistema de ficheiros CIFS
@@ -10,6 +11,7 @@ Name[uk]=Змонтувати файлову систему CIFS
 Name[x-test]=xxMount a cifs file systemxx
 Description=Executes mount with the needed arguments to mount samba shares
 Description[ca]=Executa el muntatge amb els arguments necessaris per a tenir muntades comparticions de Samba
+Description[ca@valencia]=Executa el muntatge amb els arguments necessaris per a tindre muntades comparticions de Samba
 Description[nl]=Voert een mount uit met de benodigde argumenten om samba shares aan te koppelen
 Description[pl]=Podpina z wymaganymi parametrami dla udziałów samby
 Description[pt]=Executa o 'mount' com os argumentos necessários para a montagem de partilhas de Samba
@@ -23,6 +25,7 @@ Persistence=always
 [org.kde.sambamounter.umount]
 Name=Umount a cifs file system
 Name[ca]=Desmunta un sistema de fitxers CIFS
+Name[ca@valencia]=Desmunta un sistema de fitxers CIFS
 Name[nl]=Een cifs-bestandssysteem afkoppelen
 Name[pl]=Odepnij system plików cifs
 Name[pt]=Desmontar um sistema de ficheiros CIFS
@@ -32,6 +35,7 @@ Name[uk]=Демонтувати файлову систему CIFS
 Name[x-test]=xxUmount a cifs file systemxx
 Description=Executes umount with the needed arguments to umount a samba share
 Description[ca]=Executa el desmuntatge amb els arguments necessaris per a tenir desmuntada una compartició de Samba
+Description[ca@valencia]=Executa el desmuntatge amb els arguments necessaris per a tindre desmuntada una compartició de Samba
 Description[nl]=Voert een umount uit met de benodigde argumenten om een samba share af te koppelen
 Description[pl]=Odpina z wymaganymi parametrami dla udziałów samby
 Description[pt]=Executa o 'umount' com os argumentos necessários para a desmontagem de partilhas de Samba

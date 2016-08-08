@@ -12,6 +12,7 @@ X-KDE-System-Settings-Parent-Category=network
 
 Name=Network Drivers
 Name[ca]=Unitats de xarxa
+Name[ca@valencia]=Unitats de xarxa
 Name[nl]=Netwerkstuurprogramma's
 Name[pl]=Napędy sieciowe
 Name[pt]=Controladores da Rede
@@ -22,6 +23,7 @@ Name[x-test]=xxNetwork Driversxx
 
 Comment=Configure mounts managed by Plasma instead of fstab
 Comment[ca]=Configura els muntatges gestionats per Plasma en lloc del fstab
+Comment[ca@valencia]=Configura els muntatges gestionats per Plasma en lloc del fstab
 Comment[nl]=Stel aankoppelingen in beheerd door Plasma in plaats van fstab
 Comment[pl]=Ustawienia udziałów podpiętych przez Plazmę, a nie fstab
 Comment[pt]=Configura as montagens geridas pelo Plasma, em vez do 'fstab'
@@ -32,6 +34,7 @@ Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
 
 X-KDE-Keywords=Samba,Mount,Fstab
 X-KDE-Keywords[ca]=Samba,Muntatge,Fstab
+X-KDE-Keywords[ca@valencia]=Samba,Muntatge,Fstab
 X-KDE-Keywords[nl]=Samba,Mount,Aankoppelen,Fstab
 X-KDE-Keywords[pl]=Samba,Podpięcie,Fstab
 X-KDE-Keywords[pt]=Samba,Montagem,Fstab

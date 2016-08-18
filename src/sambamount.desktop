@@ -38,6 +38,7 @@ Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
 X-KDE-Keywords=Samba,Mount,Fstab
 X-KDE-Keywords[ca]=Samba,Muntatge,Fstab
 X-KDE-Keywords[ca@valencia]=Samba,Muntatge,Fstab
+X-KDE-Keywords[de]=Samba,Mount,Fstab
 X-KDE-Keywords[es]=Samba, montaje, fstab
 X-KDE-Keywords[nl]=Samba,Mount,Aankoppelen,Fstab
 X-KDE-Keywords[pl]=Samba,Podpięcie,Fstab

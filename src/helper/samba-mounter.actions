@@ -13,6 +13,7 @@ Name[sk]=Pripojiť súborový systém CIFS
 Name[sv]=Montera ett CIFS-filsystem
 Name[uk]=Змонтувати файлову систему CIFS
 Name[x-test]=xxMount a cifs file systemxx
+Name[zh_CN]=挂载一个 cifs 文件系统
 Description=Executes mount with the needed arguments to mount samba shares
 Description[ca]=Executa el muntatge amb els arguments necessaris per a tenir muntades comparticions de Samba
 Description[ca@valencia]=Executa el muntatge amb els arguments necessaris per a tindre muntades comparticions de Samba

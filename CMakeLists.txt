@@ -4,7 +4,6 @@ project(samba-mounter)
 
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_sambamounter\")
 
-# ECM setup
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 

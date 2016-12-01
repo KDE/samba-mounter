@@ -29,25 +29,16 @@ int main(int argc, char** argv)
 
     QString sambaDir = QString::fromUtf8(QByteArray::fromBase64(argv[2]));
     QString mountPoint = QString::fromUtf8(QByteArray::fromBase64(argv[3]));
-    QString share = QString::fromUtf8("//");
-    share.append(argv[1]);
-    share.append(sambaDir);
+    const QString share = QStringLiteral("//") + argv[1] + sambaDir;
     QString uid (argv[4]);
     QString username(QString::fromUtf8(QByteArray::fromBase64(argv[5])));
     QString password(QString::fromUtf8(QByteArray::fromBase64(argv[6])));
-
-    QStringList arguments;
-    arguments.append("-t");
-    arguments.append("cifs");
-    arguments.append(share);
-    arguments.append(mountPoint);
-    arguments.append("-o");
 
     QString options;
     if (username == "none") {
         options.append("guest");
     } else {
-        options.append("user=" + username);
+        options.append("username=" + username);
     }
     if (password != "none") {
         options.append(",password=" + password);
@@ -55,7 +46,8 @@ int main(int argc, char** argv)
 
     options.append(",uid=" + uid);
 
-    arguments.append(options);
+    const QStringList arguments({ "-t", "cifs", share, mountPoint, "-o", options });
+
     QProcess proc;
     proc.start("mount", arguments);
     proc.waitForFinished();

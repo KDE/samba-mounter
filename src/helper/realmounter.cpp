@@ -33,8 +33,8 @@ int main(int argc, char** argv)
     share.append(argv[1]);
     share.append(sambaDir);
     QString uid (argv[4]);
-    QString username(argv[5]);
-    QString password(argv[6]);
+    QString username(QString::fromUtf8(QByteArray::fromBase64(argv[5])));
+    QString password(QString::fromUtf8(QByteArray::fromBase64(argv[6])));
 
     QStringList arguments;
     arguments.append("-t");

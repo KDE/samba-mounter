@@ -72,8 +72,8 @@ void OnStart::mountSamba(KConfigGroup group)
     readAction.addArgument("path", getenv("PATH"));
     readAction.addArgument("sambaDir", group.readEntry("sambaDir", "").toLocal8Bit().toBase64());
     readAction.addArgument("mountPoint", group.readEntry("mountPoint", "").toLocal8Bit().toBase64());
-    readAction.addArgument("username", group.readEntry("username", "none"));
-    readAction.addArgument("password", group.readEntry("password", "none"));
+    readAction.addArgument("username", group.readEntry("username", "none").toLocal8Bit().toBase64());
+    readAction.addArgument("password", group.readEntry("password", "none").toLocal8Bit().toBase64());
 
     ExecuteJob* reply = readAction.execute();
     bool ret = reply->exec();

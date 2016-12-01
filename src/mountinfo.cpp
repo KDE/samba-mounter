@@ -108,11 +108,7 @@ void MountInfo::checkValidSamba(const QUrl &url)
 
     m_fullSambaUrl = url.url();
     //If path and file are the same thing for example smb://foo/public
-    if (url.path().indexOf(url.fileName()) == 1) {
-        m_sambaDir = url.path();
-    } else {
-        m_sambaDir = url.path() + '/' + url.fileName();
-    }
+    m_sambaDir = url.path();
 
     qDebug() << "fullSambaUrl" << m_fullSambaUrl << "sambaDir:" << m_sambaDir;
     if (m_sambaDir.isEmpty() || m_sambaDir == "/") {

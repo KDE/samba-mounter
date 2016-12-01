@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         options.append(",password=" + password);
     }
 
-    options.append(",sec=ntlmv2,uid=" + uid);
+    options.append(",uid=" + uid);
 
     arguments.append(options);
     QProcess proc;

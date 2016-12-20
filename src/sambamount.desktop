@@ -11,7 +11,6 @@ X-KDE-ParentApp=kcontrol
 X-KDE-System-Settings-Parent-Category=network
 
 Name=Network Drivers
-Name[ast]=Unidaes de rede
 Name[ca]=Unitats de xarxa
 Name[ca@valencia]=Unitats de xarxa
 Name[cs]=Ovladače sítě
@@ -27,7 +26,6 @@ Name[uk]=Диски у мережі
 Name[x-test]=xxNetwork Driversxx
 
 Comment=Configure mounts managed by Plasma instead of fstab
-Comment[ast]=Configura montaxes xesrionaos por Plasma en cuentes de fstab
 Comment[ca]=Configura els muntatges gestionats per Plasma en lloc del fstab
 Comment[ca@valencia]=Configura els muntatges gestionats per Plasma en lloc del fstab
 Comment[en_GB]=Configure mounts managed by Plasma instead of fstab
@@ -41,7 +39,6 @@ Comment[uk]=Налаштувати точки монтування, керова
 Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
 
 X-KDE-Keywords=Samba,Mount,Fstab
-X-KDE-Keywords[ast]=SAMBA,Montar,Montaxe,Fstab
 X-KDE-Keywords[ca]=Samba,Muntatge,Fstab
 X-KDE-Keywords[ca@valencia]=Samba,Muntatge,Fstab
 X-KDE-Keywords[cs]=Samba,Mount,Fstab

@@ -1,6 +1,5 @@
 [Desktop Entry]
 Name=Samba Mounter
-Name[ast]=Montador SAMBA
 Name[ca]=Muntador per a Samba
 Name[ca@valencia]=Muntador per a Samba
 Name[cs]=Připojování Samba
@@ -38,7 +37,6 @@ X-KDE-UniqueApplet=true
 NoDisplay=true
 Categories=Qt;KDE;Utility;X-KDE-Utilities-Desktop;
 Comment=Mounts Samba shares at startup time
-Comment[ast]=Monta comparticiones SAMBA al aniciu
 Comment[ca]=Comparticions de Samba muntades en temps d'inici
 Comment[ca@valencia]=Comparticions de Samba muntades en temps d'inici
 Comment[de]=Bindet Samba-Freigaben beim Systemstart ein

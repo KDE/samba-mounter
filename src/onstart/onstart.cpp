@@ -36,7 +36,7 @@ OnStart::OnStart(QObject* parent)
 {
     QMetaObject::invokeMethod(this, "mountConfiguredShares", Qt::QueuedConnection);
 
-    connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, [this](bool isOnline) { if (isOnline) { mountConfiguredShares(); } });
+    connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged, this, &OnStart::mountConfiguredShares) ;
 }
 
 OnStart::~OnStart()
@@ -46,6 +46,10 @@ OnStart::~OnStart()
 
 void OnStart::mountConfiguredShares()
 {
+    if(!m_networkConfigurationManager.isOnline()) {
+        return;
+    }
+
     KConfigGroup group = KSharedConfig::openConfig("samba-mounter")->group("mounts");
 
     m_someFailed = false;

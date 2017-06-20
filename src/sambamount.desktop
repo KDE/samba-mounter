@@ -24,6 +24,7 @@ Name[pl]=Napędy sieciowe
 Name[pt]=Controladores da Rede
 Name[sk]=Sieťové disky
 Name[sv]=Nätverksdrivrutiner
+Name[tr]=Ağ Sürücüleri
 Name[uk]=Диски у мережі
 Name[x-test]=xxNetwork Driversxx
 
@@ -39,6 +40,7 @@ Comment[pl]=Ustawienia udziałów podpiętych przez Plazmę, a nie fstab
 Comment[pt]=Configura as montagens geridas pelo Plasma, em vez do 'fstab'
 Comment[sk]=Nastaviť pripojenia spravované Plasmou namiesto fstab-u
 Comment[sv]=Anpassa montering hanterade av Plasma istället för fstab
+Comment[tr]=Bağlamaları, fstab yerine Plasma tarafından yönetilmesini yapılandırır
 Comment[uk]=Налаштувати точки монтування, керовані Плазмою, а не fstab
 Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
 
@@ -56,6 +58,7 @@ X-KDE-Keywords[pl]=Samba,Podpięcie,Fstab
 X-KDE-Keywords[pt]=Samba,Montagem,Fstab
 X-KDE-Keywords[sk]=Samba,Mount,Fstab
 X-KDE-Keywords[sv]=Samba,montera,fstab
+X-KDE-Keywords[tr]=Samba,Bağlama,Fstab
 X-KDE-Keywords[uk]=Samba,Mount,Fstab,самба,монтування,фстаб
 X-KDE-Keywords[x-test]=xxSambaxx,xxMountxx,xxFstabxx
 

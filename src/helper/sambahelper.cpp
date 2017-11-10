@@ -19,14 +19,8 @@
 #include "sambahelper.h"
 
 #include <locale.h>
-
-#include <QtDebug>
-#include <QFile>
-#include <QTextStream>
 #include <unistd.h>
-#include <QEventLoop>
-#include <KProcess>
-
+#include <QProcess>
 
 ActionReply SambaHelper::mount(QVariantMap args)
 {
@@ -43,16 +37,8 @@ ActionReply SambaHelper::mount(QVariantMap args)
     setenv("PATH", path.toLocal8Bit(), 1);
     setlocale(LC_CTYPE, locale.toLocal8Bit());
 
-    QStringList arguments;
-    arguments.append(ip);
-    arguments.append(sambaDir);
-    arguments.append(mountPoint);
-    arguments.append(uid);
-    arguments.append(username);
-    arguments.append(password);
-
     QProcess proc;
-    proc.start("samba-realmounter", arguments);
+    proc.start("samba-realmounter", {ip, sambaDir, mountPoint, uid, username, password });
     proc.waitForFinished();
 
     ActionReply reply;
@@ -71,11 +57,8 @@ ActionReply SambaHelper::umount(QVariantMap args)
     setenv("PATH", path.toLocal8Bit(), 1);
     setlocale(LC_CTYPE, locale.toLocal8Bit());
 
-    QStringList arguments;
-    arguments.append(args["mountPoint"].toByteArray());
-
     QProcess proc;
-    proc.start("samba-realumounter", arguments);
+    proc.start("samba-realumounter", {args["mountPoint"].toString()});
     proc.waitForFinished();
 
     return ActionReply::SuccessReply();

@@ -35,12 +35,12 @@ int main(int argc, char** argv)
     QString password(QString::fromUtf8(QByteArray::fromBase64(argv[6])));
 
     QString options;
-    if (username == "none") {
-        options.append("guest");
-    } else {
+    if (username != "none" && !username.isEmpty()) {
         options.append("username=" + username);
+    } else {
+        options.append("guest");
     }
-    if (password != "none") {
+    if (password != "none" && !password.isEmpty()) {
         options.append(",password=" + password);
     }
 

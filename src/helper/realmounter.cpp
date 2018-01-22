@@ -20,6 +20,18 @@
 #include <QDebug>
 #include <iostream>
 
+int issueMount(const QStringList &arguments)
+{
+    QProcess proc;
+    proc.start("mount", arguments);
+    proc.waitForFinished();
+
+    std::cerr << proc.readAllStandardError().toStdString() << std::endl;
+    std::cerr << proc.readAllStandardOutput().toStdString() << std::endl;
+
+    return proc.exitCode();
+}
+
 int main(int argc, char** argv)
 {
     if (argc < 7) {
@@ -48,12 +60,9 @@ int main(int argc, char** argv)
 
     const QStringList arguments({ "-t", "cifs", share, mountPoint, "-o", options });
 
-    QProcess proc;
-    proc.start("mount", arguments);
-    proc.waitForFinished();
-
-    std::cerr << proc.readAllStandardError().toStdString() << std::endl;
-    std::cerr << proc.readAllStandardOutput().toStdString() << std::endl;
-
-    return proc.exitCode();
+    auto code = issueMount(arguments);
+    if (code != 0) {
+        code = issueMount(QStringList(arguments) << QStringList{QStringLiteral("-o"), QStringLiteral("vers=1.0")});
+    }
+    return code;
 }

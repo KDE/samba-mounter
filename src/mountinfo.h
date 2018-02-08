@@ -59,6 +59,7 @@ class MountInfo : public QWidget, Ui::MountInfo
         void saveConfig(KConfigGroup group);
 
     Q_SIGNALS:
+        void changed();
         void checkDone();
         void mountCreated(KConfigGroup);
         void mountEditted(KConfigGroup);

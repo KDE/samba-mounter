@@ -186,7 +186,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="button">
+      <widget class="QPushButton" name="saveButton">
        <property name="text">
         <string>Save</string>
        </property>
@@ -198,13 +198,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QPushButton</class>
-   <extends>QPushButton</extends>
-   <header>qpushbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>KUrlRequester</class>
-   <extends>QFrame</extends>
+   <extends>QWidget</extends>
    <header>kurlrequester.h</header>
   </customwidget>
  </customwidgets>
@@ -213,7 +208,7 @@
   <tabstop>shareName</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
-  <tabstop>button</tabstop>
+  <tabstop>saveButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

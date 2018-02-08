@@ -37,6 +37,8 @@ public:
     SambaMount(QWidget *parent, const QVariantList&);
     virtual ~SambaMount();
 
+    void save() override;
+
 private Q_SLOTS:
     void initSambaMounts();
     void currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);

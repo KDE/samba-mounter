@@ -56,12 +56,14 @@ MountInfo::MountInfo(OrgKdeKPasswdServerInterface* iface, KConfigGroup config, Q
     sambaRequester->setUrl(QUrl("smb://"));
     connect(sambaRequester, SIGNAL(urlSelected(QUrl)), SLOT(checkValidSamba(QUrl)));
     connect(sambaRequester, SIGNAL(textChanged(QString)),SLOT(checkValidSamba(QString)));
+    connect(username, &QLineEdit::textChanged, this, &MountInfo::changed);
+    connect(password, &QLineEdit::textChanged, this, &MountInfo::changed);
 
     connect(m_process, SIGNAL(finished(int)), SLOT(nameResolveFinished(int)));
 
     connect(shareName, SIGNAL(textChanged(QString)), SLOT(checkMountPoint(QString)));
 
-    connect(button, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
+    connect(saveButton, SIGNAL(clicked(bool)), SLOT(buttonClicked()));
 
     connect(m_interface, &OrgKdeKPasswdServerInterface::checkAuthInfoAsyncResult, this, &MountInfo::authInfoReceived);
 }
@@ -122,6 +124,8 @@ void MountInfo::checkValidSamba(const QUrl &url)
         checkValidIp(m_host);
     else
         checkValidHost(m_host);
+
+    Q_EMIT changed();
 }
 
 bool MountInfo::isIp(const QString& host)
@@ -362,7 +366,7 @@ void MountInfo::autoFillMountName()
     shareName->setText(name);
 }
 
-void MountInfo::authInfoReceived(qlonglong requestId, qlonglong seqNr, const KIO::AuthInfo & info)
+void MountInfo::authInfoReceived(qlonglong /*requestId*/, qlonglong /*seqNr*/, const KIO::AuthInfo & info)
 {
     if (!username->text().isEmpty() || !password->text().isEmpty())
         return;

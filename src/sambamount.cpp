@@ -64,16 +64,6 @@ SambaMount::SambaMount(QWidget *parent, const QVariantList&)
 
 SambaMount::~SambaMount()
 {
-    QListWidgetItem* item = m_ui->mountList->currentItem();
-    QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
-    MountInfo *info = qobject_cast<MountInfo*>(widget);
-    if (info) {
-        info->saveConfig();
-        if (!info->id().isEmpty()) {
-            mountSamba(mounts().group(info->id()));
-        }
-    }
-
     delete m_ui;
 }
 
@@ -85,6 +75,7 @@ void SambaMount::initSambaMounts()
     }
 
     MountInfo *widget = new MountInfo(m_interface, mounts(), this);
+    connect(widget, &MountInfo::changed, this, [this]() { changed(true); });
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -103,6 +94,19 @@ void SambaMount::initSambaMounts()
     }
 
     m_ui->mountList->setCurrentItem(m_ui->mountList->item(0));
+}
+
+void SambaMount::save()
+{
+    QListWidgetItem* item = m_ui->mountList->currentItem();
+    QWidget *widget = item->data(Qt::UserRole + 1).value<QWidget *>();
+    MountInfo *info = qobject_cast<MountInfo*>(widget);
+    if (info) {
+        info->saveConfig();
+        if (!info->id().isEmpty()) {
+            mountSamba(mounts().group(info->id()));
+        }
+    }
 }
 
 void SambaMount::currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -129,6 +133,7 @@ void SambaMount::mountCreated(KConfigGroup group)
     m_ui->mountList->addItem(item);
 
     MountInfo *widget = new MountInfo(m_interface, mounts(), this);
+    connect(widget, &MountInfo::changed, this, [this]() { changed(true); });
     connect(widget, SIGNAL(mountCreated(KConfigGroup)), SLOT(mountCreated(KConfigGroup)));
 
     m_layout->addWidget(widget);
@@ -187,6 +192,7 @@ void SambaMount::addMount(KConfigGroup group)
 {
     MountInfo *info = new MountInfo(m_interface, mounts(), this);
     connect(info, SIGNAL(mountEditted(KConfigGroup)), SLOT(mountEditted(KConfigGroup)));
+    connect(info, &MountInfo::changed, this, [this]() { changed(true); });
     info->setConfigGroup(group.name());
     m_layout->addWidget(info);
 

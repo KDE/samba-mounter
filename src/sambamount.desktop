@@ -27,6 +27,7 @@ Name[sv]=Nätverksdrivrutiner
 Name[tr]=Ağ Sürücüleri
 Name[uk]=Диски у мережі
 Name[x-test]=xxNetwork Driversxx
+Name[zh_CN]=网络驱动程序
 
 Comment=Configure mounts managed by Plasma instead of fstab
 Comment[ast]=Configura los montaxes xestionaos por Plasma en cuentes de fstab

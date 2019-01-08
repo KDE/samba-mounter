@@ -56,6 +56,7 @@ private:
     bool umountSamba(const QString &name);
     bool executeJob(KAuth::ExecuteJob* reply);
 
+    bool m_selectNew = false;
     QListWidgetItem *m_newMountItem;
     Ui::KCMSambaMount *m_ui;
     QStackedLayout *m_layout;

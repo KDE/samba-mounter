@@ -39,10 +39,14 @@ using namespace KAuth;
 K_PLUGIN_FACTORY(SambaMountFactory, registerPlugin<SambaMount>();)
 K_EXPORT_PLUGIN(SambaMountFactory("sambamount", "sambamount"))
 
-SambaMount::SambaMount(QWidget *parent, const QVariantList&)
+SambaMount::SambaMount(QWidget *parent, const QVariantList &args)
 : KCModule(parent)
 , m_layout(new QStackedLayout)
 {
+    if (args.count() > 1 && args.first() == QLatin1String("--new")) {
+        m_selectNew = true;
+    }
+
     setButtons(KCModule::Help);
     m_ui = new Ui::KCMSambaMount();
     m_ui->setupUi(this);
@@ -88,7 +92,7 @@ void SambaMount::initSambaMounts()
 
     m_ui->mountList->addItem(m_newMountItem);
 
-    if (m_ui->mountList->count() == 0) {
+    if (m_ui->mountList->count() == 0 || m_selectNew) {
         m_ui->mountList->setCurrentItem(m_newMountItem);
         return;
     }

@@ -36,6 +36,7 @@ OnStart::OnStart(QObject* parent)
 {
     QMetaObject::invokeMethod(this, "mountConfiguredShares", Qt::QueuedConnection);
 
+    connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::configurationAdded, this, &OnStart::mountConfiguredShares) ;
     connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged, this, &OnStart::mountConfiguredShares) ;
 }
 

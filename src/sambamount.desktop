@@ -65,6 +65,7 @@ Comment[sv]=Anpassa montering hanterade av Plasma istället för fstab
 Comment[tr]=Bağlamaları, fstab yerine Plasma tarafından yönetilmesini yapılandırır
 Comment[uk]=Налаштувати точки монтування, керовані Плазмою, а не fstab
 Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
+Comment[zh_CN]=配置由 Plasma 而不是 fstab 管理的挂载
 Comment[zh_TW]=配置由 Plasma 而非 fstab 管理的掛載
 
 X-KDE-Keywords=Samba,Mount,Fstab

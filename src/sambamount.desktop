@@ -43,7 +43,7 @@ Name[zh_TW]=網路硬碟
 
 Comment=Configure mounts managed by Plasma instead of fstab
 Comment[ca]=Configura els muntatges gestionats pel Plasma en lloc del fstab
-Comment[ca@valencia]=Configura els muntatges gestionats pel Plasma en lloc del fstab
+Comment[ca@valencia]=Configura els muntatges gestionats per Plasma en lloc del fstab
 Comment[de]=Einrichtung zum Einhängen über Plasm anstatt fstab
 Comment[el]=Διαμόρφωση προσαρτήσεων με διαχείριση από το Plasma αντί του fstab
 Comment[en_GB]=Configure mounts managed by Plasma instead of fstab

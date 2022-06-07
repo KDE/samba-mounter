@@ -1,7 +1,7 @@
 [org.kde.sambamounter.mount]
 Name=Mount a cifs file system
 Name[ca]=Munta un sistema de fitxers CIFS
-Name[ca@valencia]=Munta un sistema de fitxers CIFS
+Name[ca@valencia]=Munta un sistema de fichers CIFS
 Name[cs]=Připojit souborový systém cifs
 Name[de]=Ein CIFS-Dateisystem einhängen
 Name[el]=Προσάρτηση ενός συστήματος αρχείων cifs
@@ -67,7 +67,7 @@ Persistence=always
 [org.kde.sambamounter.umount]
 Name=Umount a cifs file system
 Name[ca]=Desmunta un sistema de fitxers CIFS
-Name[ca@valencia]=Desmunta un sistema de fitxers CIFS
+Name[ca@valencia]=Desmunta un sistema de fichers CIFS
 Name[de]=CIFS-Dateisystem aushängen
 Name[el]=Απομάκρυνση συστήματος αρχείων cifs
 Name[en_GB]=Unmount a cifs file system

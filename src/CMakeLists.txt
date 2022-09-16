@@ -20,10 +20,10 @@ target_link_libraries(kcm_sambamount
     Qt5::DBus
 )
 
-install(TARGETS kcm_sambamount DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS kcm_sambamount DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
-install(FILES sambamount.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-install(PROGRAMS sambamounterapp.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(FILES sambamount.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(PROGRAMS sambamounterapp.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 add_subdirectory(helper)
 add_subdirectory(onstart)

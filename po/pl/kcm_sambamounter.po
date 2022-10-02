@@ -1,0 +1,105 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:19+0200\n"
+"PO-Revision-Date: 2016-08-06 08:59+0100\n"
+"Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
+"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 2.0\n"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: mount.ui:26
+#, kde-format
+msgid "Name:"
+msgstr "Nazwa:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: mount.ui:62
+#, kde-format
+msgid "Samba Share:"
+msgstr "Udział Samby:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: mount.ui:96
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Not Required</span></"
+"p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Niewymagane</span></"
+"p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: mount.ui:112
+#, kde-format
+msgid "Password:"
+msgstr "Hasło:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: mount.ui:122
+#, kde-format
+msgid "Username:"
+msgstr "Nazwa użytkownika:"
+
+#. i18n: ectx: property (text), widget (QPushButton, saveButton)
+#: mount.ui:191
+#, kde-format
+msgid "Save"
+msgstr "Zapisz"
+
+#: mountinfo.cpp:117
+#, kde-format
+msgid "You must select a folder"
+msgstr "Musisz wybrać katalog"
+
+#: mountinfo.cpp:175 mountinfo.cpp:192
+#, kde-format
+msgid "Couldn't get the server IP"
+msgstr "Nie można uzyskać IP serwera"
+
+#: mountinfo.cpp:236 mountinfo.cpp:245
+#, kde-format
+msgid "Please, choose another name"
+msgstr "Wybierz inną nazwę"
+
+#: sambamount.cpp:89 sambamount.cpp:90
+#, kde-format
+msgid "New Share"
+msgstr "Nowy udział"
+
+#: sambamount.cpp:245
+#, kde-format
+msgid "Couldn't find action '%1'"
+msgstr "Nie można działania '%1'"
+
+#: sambamount.cpp:255
+#, kde-format
+msgid ""
+"Error triggering mount:\n"
+"%1"
+msgstr ""
+"Błąd przy podpinaniu:\n"
+"%1"
+
+#: sambamount.cpp:261
+#, kde-format
+msgid ""
+"Error %1 on '%2':\n"
+"%3"
+msgstr ""
+"Błąd %1 w '%2':\n"
+"%3"
+
+#~ msgid "Form"
+#~ msgstr "Formularz"

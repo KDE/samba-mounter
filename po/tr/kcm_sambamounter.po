@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kcm_sambamounter\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:19+0200\n"
+"PO-Revision-Date: 2017-06-16 11:53+0000\n"
+"Last-Translator: Mete <metebilgin48@gmail.com>\n"
+"Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1497613992.000000\n"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: mount.ui:26
+#, kde-format
+msgid "Name:"
+msgstr "İsim:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: mount.ui:62
+#, kde-format
+msgid "Samba Share:"
+msgstr "Samba Paylaşım:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: mount.ui:96
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Not Required</span></"
+"p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Gerekli Değil</"
+"span></p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: mount.ui:112
+#, kde-format
+msgid "Password:"
+msgstr "Parola:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: mount.ui:122
+#, kde-format
+msgid "Username:"
+msgstr "Kullanıcı Adı:"
+
+#. i18n: ectx: property (text), widget (QPushButton, saveButton)
+#: mount.ui:191
+#, kde-format
+msgid "Save"
+msgstr "Kaydet"
+
+#: mountinfo.cpp:117
+#, kde-format
+msgid "You must select a folder"
+msgstr "Bir klasör seçmelisiniz."
+
+#: mountinfo.cpp:175 mountinfo.cpp:192
+#, kde-format
+msgid "Couldn't get the server IP"
+msgstr "Sunucu IP'si alınamadı"
+
+#: mountinfo.cpp:236 mountinfo.cpp:245
+#, kde-format
+msgid "Please, choose another name"
+msgstr "Lütfen, başka bir isim seçin"
+
+#: sambamount.cpp:89 sambamount.cpp:90
+#, kde-format
+msgid "New Share"
+msgstr "Yeni Paylaşım"
+
+#: sambamount.cpp:245
+#, kde-format
+msgid "Couldn't find action '%1'"
+msgstr "'%1' eylemi bulunamadı"
+
+#: sambamount.cpp:255
+#, kde-format
+msgid ""
+"Error triggering mount:\n"
+"%1"
+msgstr ""
+"Bağlama tetikleme hatası:\n"
+"%1"
+
+#: sambamount.cpp:261
+#, kde-format
+msgid ""
+"Error %1 on '%2':\n"
+"%3"
+msgstr ""
+"%2 içinde %1 hatası:\n"
+"%3"

@@ -1,0 +1,101 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the samba-mounter package.
+# Shinjo Park <kde@peremen.name>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: samba-mounter\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:19+0200\n"
+"PO-Revision-Date: 2019-05-19 23:17+0200\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 18.12.3\n"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: mount.ui:26
+#, kde-format
+msgid "Name:"
+msgstr "이름:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: mount.ui:62
+#, kde-format
+msgid "Samba Share:"
+msgstr "Samba 공유:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: mount.ui:96
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Not Required</span></"
+"p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">필요하지 않음</"
+"span></p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: mount.ui:112
+#, kde-format
+msgid "Password:"
+msgstr "암호:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: mount.ui:122
+#, kde-format
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#. i18n: ectx: property (text), widget (QPushButton, saveButton)
+#: mount.ui:191
+#, kde-format
+msgid "Save"
+msgstr "저장"
+
+#: mountinfo.cpp:117
+#, kde-format
+msgid "You must select a folder"
+msgstr "폴더를 선택해야 합니다"
+
+#: mountinfo.cpp:175 mountinfo.cpp:192
+#, kde-format
+msgid "Couldn't get the server IP"
+msgstr "서버 IP를 가져올 수 없음"
+
+#: mountinfo.cpp:236 mountinfo.cpp:245
+#, kde-format
+msgid "Please, choose another name"
+msgstr "다른 이름을 지정하십시오"
+
+#: sambamount.cpp:89 sambamount.cpp:90
+#, kde-format
+msgid "New Share"
+msgstr "새 공유"
+
+#: sambamount.cpp:245
+#, kde-format
+msgid "Couldn't find action '%1'"
+msgstr "동작 '%1'을(를) 찾을 수 없음"
+
+#: sambamount.cpp:255
+#, kde-format
+msgid ""
+"Error triggering mount:\n"
+"%1"
+msgstr ""
+"마운트 실행 중 오류 발생:\n"
+"%1"
+
+#: sambamount.cpp:261
+#, kde-format
+msgid ""
+"Error %1 on '%2':\n"
+"%3"
+msgstr ""
+"'%2'의 오류 %1:\n"
+"%3"

@@ -1,0 +1,101 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Frederik Schwarzer <schwarzer@kde.org>, 2016.
+# Burkhard Lück <lueck@hube-lueck.de>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:19+0200\n"
+"PO-Revision-Date: 2017-11-05 21:33+0100\n"
+"Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: mount.ui:26
+#, kde-format
+msgid "Name:"
+msgstr "Name:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: mount.ui:62
+#, kde-format
+msgid "Samba Share:"
+msgstr "Samba-Freigabe:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: mount.ui:96
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Not Required</span></"
+"p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Nicht benötigt</"
+"span></p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: mount.ui:112
+#, kde-format
+msgid "Password:"
+msgstr "Passwort:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: mount.ui:122
+#, kde-format
+msgid "Username:"
+msgstr "Benutzername:"
+
+#. i18n: ectx: property (text), widget (QPushButton, saveButton)
+#: mount.ui:191
+#, kde-format
+msgid "Save"
+msgstr "Speichern"
+
+#: mountinfo.cpp:117
+#, kde-format
+msgid "You must select a folder"
+msgstr "Sie müssen einen Ordner auswählen"
+
+#: mountinfo.cpp:175 mountinfo.cpp:192
+#, kde-format
+msgid "Couldn't get the server IP"
+msgstr "Die Server-IP kann nicht ermittelt werden"
+
+#: mountinfo.cpp:236 mountinfo.cpp:245
+#, kde-format
+msgid "Please, choose another name"
+msgstr "Wählen Sie bitte einen anderen Namen"
+
+#: sambamount.cpp:89 sambamount.cpp:90
+#, kde-format
+msgid "New Share"
+msgstr "Neue Freigabe"
+
+#: sambamount.cpp:245
+#, kde-format
+msgid "Couldn't find action '%1'"
+msgstr "Die Aktion „%1“ wurde nicht gefunden"
+
+#: sambamount.cpp:255
+#, kde-format
+msgid ""
+"Error triggering mount:\n"
+"%1"
+msgstr ""
+"Fehler beim Einhängen:\n"
+"%1"
+
+#: sambamount.cpp:261
+#, kde-format
+msgid ""
+"Error %1 on '%2':\n"
+"%3"
+msgstr ""
+"Fehler %1 auf %2:\n"
+"%3"

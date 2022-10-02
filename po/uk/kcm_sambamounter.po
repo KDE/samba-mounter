@@ -1,0 +1,107 @@
+# Translation of kcm_sambamounter.po to Ukrainian
+# Copyright (C) 2016 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Yuri Chornoivan <yurchor@ukr.net>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: kcm_sambamounter\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:19+0200\n"
+"PO-Revision-Date: 2016-08-04 13:01+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.5\n"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: mount.ui:26
+#, kde-format
+msgid "Name:"
+msgstr "Назва:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: mount.ui:62
+#, kde-format
+msgid "Samba Share:"
+msgstr "Спільний ресурс Samba:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: mount.ui:96
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Not Required</span></"
+"p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Не потрібен</span></"
+"p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: mount.ui:112
+#, kde-format
+msgid "Password:"
+msgstr "Пароль:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: mount.ui:122
+#, kde-format
+msgid "Username:"
+msgstr "Користувач:"
+
+#. i18n: ectx: property (text), widget (QPushButton, saveButton)
+#: mount.ui:191
+#, kde-format
+msgid "Save"
+msgstr "Зберегти"
+
+#: mountinfo.cpp:117
+#, kde-format
+msgid "You must select a folder"
+msgstr "Вам слід вказати теку"
+
+#: mountinfo.cpp:175 mountinfo.cpp:192
+#, kde-format
+msgid "Couldn't get the server IP"
+msgstr "Не вдалося отримати IP сервера"
+
+#: mountinfo.cpp:236 mountinfo.cpp:245
+#, kde-format
+msgid "Please, choose another name"
+msgstr "Будь ласка, виберіть іншу назву"
+
+#: sambamount.cpp:89 sambamount.cpp:90
+#, kde-format
+msgid "New Share"
+msgstr "Новий спільний ресурс"
+
+#: sambamount.cpp:245
+#, kde-format
+msgid "Couldn't find action '%1'"
+msgstr "Не вдалося знайти дію «%1»"
+
+#: sambamount.cpp:255
+#, kde-format
+msgid ""
+"Error triggering mount:\n"
+"%1"
+msgstr ""
+"Помилка під час спроби монтування:\n"
+"%1"
+
+#: sambamount.cpp:261
+#, kde-format
+msgid ""
+"Error %1 on '%2':\n"
+"%3"
+msgstr ""
+"Помилка %1 під час обробки «%2»:\n"
+"%3"
+
+#~ msgid "Form"
+#~ msgstr "Форма"

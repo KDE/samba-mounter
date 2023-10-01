@@ -65,7 +65,7 @@ msgstr "Debe escoller un cartafol"
 #: mountinfo.cpp:175 mountinfo.cpp:192
 #, kde-format
 msgid "Couldn't get the server IP"
-msgstr "Non se puido obter o IP do servidor"
+msgstr "Non foi posíbel obter o IP do servidor"
 
 #: mountinfo.cpp:236 mountinfo.cpp:245
 #, kde-format
@@ -80,7 +80,7 @@ msgstr "Nova compartición"
 #: sambamount.cpp:245
 #, kde-format
 msgid "Couldn't find action '%1'"
-msgstr "Non se puido atopar a acción «%1»"
+msgstr "Non foi posíbel atopar a acción «%1»"
 
 #: sambamount.cpp:255
 #, kde-format

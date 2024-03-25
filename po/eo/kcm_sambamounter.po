@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: samba-mounter\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:39+0000\n"
-"PO-Revision-Date: 2024-02-26 21:30+0100\n"
+"PO-Revision-Date: 2024-03-24 10:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo.org>\n"
 "Language: eo\n"
@@ -28,7 +28,7 @@ msgstr "Nomo:"
 #: mount.ui:62
 #, kde-format
 msgid "Samba Share:"
-msgstr ""
+msgstr "Samba Kunhavigo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: mount.ui:96
@@ -59,27 +59,27 @@ msgstr "Konservi"
 #: mountinfo.cpp:117
 #, kde-format
 msgid "You must select a folder"
-msgstr ""
+msgstr "Vi devas elekti dosierujon"
 
 #: mountinfo.cpp:175 mountinfo.cpp:192
 #, kde-format
 msgid "Couldn't get the server IP"
-msgstr ""
+msgstr "Ne eblis akiri la IP-on de la servilo"
 
 #: mountinfo.cpp:236 mountinfo.cpp:245
 #, kde-format
 msgid "Please, choose another name"
-msgstr ""
+msgstr "Bonvolu elekti alian nomon"
 
 #: sambamount.cpp:89 sambamount.cpp:90
 #, kde-format
 msgid "New Share"
-msgstr ""
+msgstr "Nova Kunhavigo"
 
 #: sambamount.cpp:245
 #, kde-format
 msgid "Couldn't find action '%1'"
-msgstr ""
+msgstr "Ne eblis trovi agon '%1'"
 
 #: sambamount.cpp:255
 #, kde-format

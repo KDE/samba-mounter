@@ -11,3 +11,6 @@ Dependencies:
     'frameworks/kauth': '@stable'
     'frameworks/solid': '@stable'
     'frameworks/kconfig': '@stable'
+
+Options:
+  require-passing-tests-on: ['Linux', 'FreeBSD', 'Windows']

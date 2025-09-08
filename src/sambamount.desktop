@@ -43,7 +43,6 @@ Name[sl]=Mrežni diski
 Name[sv]=Nätverksdiskar
 Name[tr]=Ağ Sürücüleri
 Name[uk]=Диски у мережі
-Name[x-test]=xxNetwork Drivesxx
 Name[zh_CN]=网络驱动器
 Name[zh_TW]=網路硬碟
 
@@ -79,7 +78,6 @@ Comment[sl]=Nastavi priklopljene diske s Plasmo namesto pred datoteke fstab
 Comment[sv]=Anpassa montering hanterade av Plasma istället för fstab
 Comment[tr]=Bağlamaları, fstab yerine Plasma tarafından yönetilmesini yapılandırır
 Comment[uk]=Налаштувати точки монтування, керовані Плазмою, а не fstab
-Comment[x-test]=xxConfigure mounts managed by Plasma instead of fstabxx
 Comment[zh_CN]=配置由 Plasma 而不是 fstab 管理的挂载
 Comment[zh_TW]=配置由 Plasma 而非 fstab 管理的掛載
 
@@ -116,8 +114,7 @@ X-KDE-Keywords[sl]=Samba,Mount,Fstab
 X-KDE-Keywords[sv]=Samba,montera,fstab
 X-KDE-Keywords[tr]=Samba,Bağlama,Fstab
 X-KDE-Keywords[uk]=Samba,Mount,Fstab,самба,монтування,фстаб
-X-KDE-Keywords[x-test]=xxSambaxx,xxMountxx,xxFstabxx
-X-KDE-Keywords[zh_CN]=Samba,Mount,Fstab,挂载,Windows 共享,guazai,gongxiang
+X-KDE-Keywords[zh_CN]=Samba,Mount,Fstab,guazai,gongxiang,挂载,Windows 共享
 X-KDE-Keywords[zh_TW]=Samba,Mount,Fstab
 
 Categories=Qt;KDE;X-KDE-settings-sambamount;

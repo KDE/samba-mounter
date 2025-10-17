@@ -3,7 +3,7 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Antoni Bella Pérez <antonibella5@yahoo.com>, 2016.
+# SPDX-FileCopyrightText: 2016 Antoni Bella Pérez <antonibella5@yahoo.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: samba-mounter\n"
@@ -73,7 +73,7 @@ msgstr "No s'ha pogut obtindre la IP del servidor"
 #: mountinfo.cpp:236 mountinfo.cpp:245
 #, kde-format
 msgid "Please, choose another name"
-msgstr "Seleccioneu un altre nom"
+msgstr "Trieu un altre nom"
 
 #: sambamount.cpp:89 sambamount.cpp:90
 #, kde-format

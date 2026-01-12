@@ -91,7 +91,7 @@ msgid ""
 "Error triggering mount:\n"
 "%1"
 msgstr ""
-"S'ha produït un error en iniciar el muntatge:\n"
+"S'ha produït un error mentre es llançava el muntatge:\n"
 "%1"
 
 #: sambamount.cpp:261

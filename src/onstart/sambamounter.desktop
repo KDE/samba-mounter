@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Samba Mounter
-Name[ar]=ضام سامبا
+Name[ar]=واصل سامبا
 Name[ca]=Muntador del Samba
 Name[ca@valencia]=Muntador de Samba
 Name[cs]=Připojování Samba
@@ -37,7 +37,7 @@ Name[uk]=Засіб монтування Samba
 Name[zh_CN]=Samba 挂载程序
 Name[zh_TW]=Samba 掛載工具
 GenericName=Mounts Samba shares
-GenericName[ar]=يضم ملفات سامبا
+GenericName[ar]=يوصّل ملفات سامبا
 GenericName[ca]=Comparticions de Samba muntades
 GenericName[ca@valencia]=Comparticions de Samba muntades
 GenericName[cs]=Připojuje sdílení Samba
@@ -84,7 +84,7 @@ X-KDE-UniqueApplet=true
 NoDisplay=true
 Categories=Qt;KDE;Utility;X-KDE-Utilities-Desktop;
 Comment=Mounts Samba shares at startup time
-Comment[ar]=يضم ملفات سامبا في وقت الإقلاع
+Comment[ar]=يوصّل ملفات سامبا في وقت الإقلاع
 Comment[ca]=Comparticions de Samba muntades en temps d'inici
 Comment[ca@valencia]=Comparticions de Samba muntades en temps d'inici
 Comment[cs]=Připojuje sdílení Samba při spouštění

@@ -48,7 +48,7 @@ Name[zh_CN]=网络驱动器
 Name[zh_TW]=網路硬碟
 
 Comment=Configure mounts managed by Plasma instead of fstab
-Comment[ar]=عملية الضم مدارة بواسطة بلازما عوضا عن fstab
+Comment[ar]=عملية الوصل مدارة بواسطة بلازما عوضا عن fstab
 Comment[ca]=Configura els muntatges gestionats pel Plasma en lloc del fstab
 Comment[ca@valencia]=Configura els muntatges gestionats per Plasma en lloc del fstab
 Comment[cs]=Nastavuje připojení spravovaná Plasmou namísto fstabem
@@ -85,7 +85,7 @@ Comment[zh_CN]=配置由 Plasma 而不是 fstab 管理的挂载
 Comment[zh_TW]=配置由 Plasma 而非 fstab 管理的掛載
 
 X-KDE-Keywords=Samba,Mount,Fstab
-X-KDE-Keywords[ar]=سامبا,ضم,قرص
+X-KDE-Keywords[ar]=سامبا,وصل,قرص
 X-KDE-Keywords[ca]=Samba,Muntatge,Fstab
 X-KDE-Keywords[ca@valencia]=Samba,Muntatge,Fstab
 X-KDE-Keywords[cs]=Samba,Mount,Fstab

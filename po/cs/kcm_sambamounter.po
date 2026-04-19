@@ -1,21 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # SPDX-FileCopyrightText: 2016, 2024 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2026 Libor Filípek <filipek.libor@protonmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2024-08-28 11:30+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
-"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2026-04-18 11:16+0200\n"
+"Last-Translator: Libor Filípek <filipek.libor@protonmail.com>\n"
+"Language-Team: \n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.08.0\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: mount.ui:26
@@ -60,12 +61,12 @@ msgstr "Uložit"
 #: mountinfo.cpp:117
 #, kde-format
 msgid "You must select a folder"
-msgstr ""
+msgstr "Musíte vybrat složku"
 
 #: mountinfo.cpp:175 mountinfo.cpp:192
 #, kde-format
 msgid "Couldn't get the server IP"
-msgstr ""
+msgstr "Nepodařilo se získat IP adresu serveru"
 
 #: mountinfo.cpp:236 mountinfo.cpp:245
 #, kde-format
@@ -80,7 +81,7 @@ msgstr "Nové sdílení"
 #: sambamount.cpp:245
 #, kde-format
 msgid "Couldn't find action '%1'"
-msgstr ""
+msgstr "Akci '%1' se nepodařilo najít"
 
 #: sambamount.cpp:255
 #, kde-format
@@ -88,6 +89,8 @@ msgid ""
 "Error triggering mount:\n"
 "%1"
 msgstr ""
+"Chyba při připojování:\n"
+"%1"
 
 #: sambamount.cpp:261
 #, kde-format
